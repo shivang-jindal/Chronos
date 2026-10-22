@@ -11,6 +11,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 
 const tasks = [
   { name: 'api', color: '\u001b[36m', args: ['run', 'dev:server'] },
@@ -42,7 +43,7 @@ function shutdown(code = 0) {
 }
 
 for (const task of tasks) {
-  const child = spawn('npm.cmd', task.args, {
+  const child = spawn(npm, task.args, {
     cwd: root,
     stdio: ['ignore', 'pipe', 'pipe'],
     env: process.env,

@@ -80,16 +80,16 @@ export function ScenarioBuilderPage() {
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-ink-muted mb-2">Scenario Name</label>
-                <input type="text" value={scenario.name} onChange={(e) => setScenario({ ...scenario, name: e.target.value })} placeholder="Enter scenario name" className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500" />
+                <input type="text" value={scenario.name} onChange={(e) => setScenario({ ...scenario, name: e.target.value })} placeholder="Enter scenario name" className="input" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-ink-muted mb-2">Description</label>
-                <textarea value={scenario.description} onChange={(e) => setScenario({ ...scenario, description: e.target.value })} placeholder="Describe your scenario..." rows={3} className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500" />
+                <textarea value={scenario.description} onChange={(e) => setScenario({ ...scenario, description: e.target.value })} placeholder="Describe your scenario..." rows={3} className="input" />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-ink-muted mb-2">Scenario Type</label>
-                  <select value={scenario.type} onChange={(e) => setScenario({ ...scenario, type: e.target.value as any })} className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500">
+                  <select value={scenario.type} onChange={(e) => setScenario({ ...scenario, type: e.target.value as any })} className="input">
                     {['business_as_usual', 'aggressive_mitigation', 'worst_case', 'custom'].map((t) => (
                       <option key={t} value={t}>{t.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}</option>
                     ))}
@@ -97,15 +97,15 @@ export function ScenarioBuilderPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-ink-muted mb-2">Base Year</label>
-                  <input type="number" value={scenario.baseYear} onChange={(e) => setScenario({ ...scenario, baseYear: parseInt(e.target.value) })} min={1984} max={2024} className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500" />
+                  <input type="number" value={scenario.baseYear} onChange={(e) => setScenario({ ...scenario, baseYear: parseInt(e.target.value) })} min={1984} max={2024} className="input" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-ink-muted mb-2">Horizon Year</label>
-                  <input type="number" value={scenario.horizonYear} onChange={(e) => setScenario({ ...scenario, horizonYear: parseInt(e.target.value) })} min={2025} max={2100} className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500" />
+                  <input type="number" value={scenario.horizonYear} onChange={(e) => setScenario({ ...scenario, horizonYear: parseInt(e.target.value) })} min={2025} max={2100} className="input" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-ink-muted mb-2">Climate Model</label>
-                  <select value={scenario.climateModel} onChange={(e) => setScenario({ ...scenario, climateModel: e.target.value })} className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500">
+                  <select value={scenario.climateModel} onChange={(e) => setScenario({ ...scenario, climateModel: e.target.value })} className="input">
                     {['ssp1_26', 'ssp2_45', 'ssp3_70', 'ssp5_85'].map((m) => (
                       <option key={m} value={m}>{m.toUpperCase()}</option>
                     ))}
@@ -116,7 +116,7 @@ export function ScenarioBuilderPage() {
           </div>
 
           <div className="flex-1 overflow-y-auto p-4">
-            <div className="bg-surface-sunken bg-surface/60 rounded-xl p-6">
+            <div className="bg-surface/60 rounded-xl p-6">
               <h2 className="text-xl font-bold text-ink mb-4">Scenario Preview</h2>
               <p className="text-center text-ink-faint">Configure parameters to preview scenario</p>
             </div>

@@ -41,7 +41,7 @@ export function ScenarioBuilderModal({ isOpen, onClose }: { isOpen: boolean; onC
               id="scenario-name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+              className="input"
             />
           </div>
 
@@ -51,7 +51,7 @@ export function ScenarioBuilderModal({ isOpen, onClose }: { isOpen: boolean; onC
               id="scenario-type"
               value={scenarioType}
               onChange={(e) => setScenarioType(e.target.value)}
-              className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+              className="input"
             >
               {SCENARIO_TYPES.map((type) => (
                 <option key={type} value={type}>{type}</option>
@@ -65,7 +65,7 @@ export function ScenarioBuilderModal({ isOpen, onClose }: { isOpen: boolean; onC
               id="scenario-forcing"
               value={forcing}
               onChange={(e) => setForcing(e.target.value)}
-              className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+              className="input"
             >
               {SCENARIO_FORCINGS.map((f) => (
                 <option key={f} value={f}>{f}</option>
@@ -99,10 +99,10 @@ export function ScenarioBuilderModal({ isOpen, onClose }: { isOpen: boolean; onC
         </div>
 
         <div className="flex justify-end gap-2 p-4 border-t border-line">
-          <button onClick={onClose} className="px-4 py-2 text-sm font-medium text-ink-muted hover:bg-white/5 rounded-lg transition-colors">
+          <button onClick={onClose} className="btn btn-ghost">
             Cancel
           </button>
-          <button onClick={handleCreate} className="px-4 py-2 text-sm font-medium text-[#04121d] bg-brand-500 hover:bg-brand-400 rounded-lg transition-colors">
+          <button onClick={handleCreate} className="btn btn-primary">
             Create Scenario
           </button>
         </div>

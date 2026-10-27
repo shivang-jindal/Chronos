@@ -59,7 +59,7 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                     <label className="block text-sm font-medium text-ink-muted mb-2">Default View</label>
                     <select
                       value="globe"
-                      className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                      className="input"
                     >
                       <option value="globe">3D Globe</option>
                       <option value="map">2D Map</option>
@@ -71,7 +71,7 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                     <select
                       value={temporal.resolution}
                       onChange={(e) => { /* setResolution(e.target.value as any); */ }}
-                      className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                      className="input"
                     >
                       {TEMPORAL_RESOLUTIONS.map((r) => (
                         <option key={r} value={r}>{r.charAt(0).toUpperCase() + r.slice(1)}</option>
@@ -83,7 +83,7 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                     <select
                       value={visualizationStyle}
                       onChange={(e) => setVisualizationStyle(e.target.value as any)}
-                      className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                      className="input"
                     >
                       {VISUALIZATION_STYLES.map((s) => (
                         <option key={s} value={s}>{VISUALIZATION_STYLE_METADATA[s as keyof typeof VISUALIZATION_STYLE_METADATA]?.label || s}</option>
@@ -105,7 +105,7 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                     <select
                       value={visualizationStyle}
                       onChange={(e) => setVisualizationStyle(e.target.value as any)}
-                      className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                      className="input"
                     >
                       {VISUALIZATION_STYLES.map((s) => (
                         <option key={s} value={s}>{VISUALIZATION_STYLE_METADATA[s as keyof typeof VISUALIZATION_STYLE_METADATA]?.label || s}</option>
@@ -115,8 +115,8 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                   <div>
                     <label className="block text-sm font-medium text-ink-muted mb-2">Default Time Range</label>
                     <div className="grid grid-cols-2 gap-4">
-                      <input type="number" placeholder="Start Year" className="px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500" />
-                      <input type="number" placeholder="End Year" className="px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500" />
+                      <input type="number" placeholder="Start Year" className="input" />
+                      <input type="number" placeholder="End Year" className="input" />
                     </div>
                   </div>
                   <div>
@@ -232,7 +232,7 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                   <div>
                     <label className="block text-sm font-medium text-ink-muted mb-2">Change Detection Algorithm</label>
                     <select
-                      className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                      className="input"
                     >
                       {CHANGE_DETECTION_ALGORITHMS.map((a) => (
                         <option key={a} value={a}>{a.toUpperCase()}</option>
@@ -242,7 +242,7 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                   <div>
                     <label className="block text-sm font-medium text-ink-muted mb-2">Forecasting Model</label>
                     <select
-                      className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                      className="input"
                     >
                       {FORECASTING_MODELS.map((m) => (
                         <option key={m} value={m}>{m.charAt(0).toUpperCase() + m.slice(1)}</option>
@@ -252,7 +252,7 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                   <div>
                     <label className="block text-sm font-medium text-ink-muted mb-2">Scenario Forcing</label>
                     <select
-                      className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                      className="input"
                     >
                       {SCENARIO_FORCINGS.map((f) => (
                         <option key={f} value={f}>{f.toUpperCase()}</option>

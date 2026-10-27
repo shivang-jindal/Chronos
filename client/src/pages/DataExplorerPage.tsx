@@ -38,7 +38,7 @@ export function DataExplorerPage() {
             <p className="text-ink-muted mt-1">Browse and discover Earth observation datasets</p>
           </div>
           <div className="flex items-center gap-2">
-            <button className="px-4 py-2 text-sm font-medium text-[#04121d] bg-brand-500 hover:bg-brand-400 rounded-lg flex items-center gap-2">
+            <button className="btn btn-primary flex items-center gap-2">
               <Download className="w-4 h-4" />
               Bulk Download
             </button>
@@ -57,7 +57,7 @@ export function DataExplorerPage() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search datasets..."
-                className="w-full pl-10 pr-4 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                className="input pl-10 pr-4"
               />
             </div>
           </div>
@@ -68,7 +68,7 @@ export function DataExplorerPage() {
               <select
                 value={selectedCollection}
                 onChange={(e) => setSelectedCollection(e.target.value)}
-                className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                className="input"
               >
                 <option value="">All Collections</option>
                 <option value="optical">Optical</option>
@@ -110,7 +110,7 @@ export function DataExplorerPage() {
           <div className="flex items-center justify-between mb-4">
             <h1 className="text-2xl font-bold text-ink">Collections</h1>
             <div className="flex items-center gap-2">
-              <select className="px-3 py-1 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500">
+              <select className="input px-3 py-1">
                 <option value="grid">Grid View</option>
                 <option value="list">List View</option>
                 <option value="table">Table View</option>
@@ -144,7 +144,7 @@ export function DataExplorerPage() {
                   <h3 className="font-semibold text-ink truncate">{collection.name}</h3>
                   <p className="text-sm text-ink-faint line-clamp-2">{collection.description}</p>
                   <div className="flex items-center gap-2 pt-2 border-t border-line">
-                    <button className="flex-1 px-3 py-1.5 text-sm font-medium text-brand-300 hover:bg-brand-500/10 rounded-lg transition-colors flex items-center justify-center gap-1">
+                    <button className="btn btn-ghost flex-1 gap-1 text-brand-300">
                       <Eye className="w-4 h-4" />
                       Preview
                     </button>

@@ -58,7 +58,7 @@ export function ForecastingPage() {
             <div className="space-y-6">
               <div>
                 <label className="block text-sm font-medium text-ink-muted mb-2">Layer</label>
-                <select value={params.layer} onChange={(e) => setParams({ ...params, layer: e.target.value })} className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500">
+                <select value={params.layer} onChange={(e) => setParams({ ...params, layer: e.target.value })} className="input">
                   {['landsat_annual', 'sentinel2_annual', 'planet_nicfi_annual', 'night_lights_annual', 'urban_extents_annual', 'water_annual', 'glacier_annual', 'coastline_annual', 'cropland_annual', 'sea_ice_annual'].map((l) => (
                     <option key={l} value={l}>{l.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}</option>
                   ))}
@@ -68,7 +68,7 @@ export function ForecastingPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-ink-muted mb-2">Location</label>
-                  <select value={params.location.type} onChange={(e) => setParams({ ...params, location: { ...params.location, type: e.target.value } })} className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500">
+                  <select value={params.location.type} onChange={(e) => setParams({ ...params, location: { ...params.location, type: e.target.value } })} className="input">
                     <option value="point">Point</option>
                     <option value="bbox">Bounding Box</option>
                     <option value="polygon">Polygon</option>
@@ -76,7 +76,7 @@ export function ForecastingPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-ink-muted mb-2">Model</label>
-                  <select value={params.model} onChange={(e) => setParams({ ...params, model: e.target.value as any })} className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500">
+                  <select value={params.model} onChange={(e) => setParams({ ...params, model: e.target.value as any })} className="input">
                     {['earthformer', 'predrnn', 'simvp', 'diffeearth', 'neuralgcm', 'climsim', 'icenet', 'deepice'].map((m) => (
                       <option key={m} value={m}>{m}</option>
                     ))}
@@ -87,11 +87,11 @@ export function ForecastingPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-ink-muted mb-2">Horizon (years)</label>
-                  <input type="number" min={1} max={50} value={params.horizonYears} onChange={(e) => setParams({ ...params, horizonYears: parseInt(e.target.value) })} className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500" />
+                  <input type="number" min={1} max={50} value={params.horizonYears} onChange={(e) => setParams({ ...params, horizonYears: parseInt(e.target.value) })} className="input" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-ink-muted mb-2">Scenario</label>
-                  <select value={params.scenario} onChange={(e) => setParams({ ...params, scenario: e.target.value as any })} className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500">
+                  <select value={params.scenario} onChange={(e) => setParams({ ...params, scenario: e.target.value as any })} className="input">
                     {['ssp1_26', 'ssp2_45', 'ssp3_70', 'ssp5_85'].map((s) => (
                       <option key={s} value={s}>{s.toUpperCase()}</option>
                     ))}
@@ -106,13 +106,13 @@ export function ForecastingPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-ink-muted mb-2">Ensemble Size</label>
-                  <input type="number" min={10} max={1000} value={50} className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500" />
+                  <input type="number" min={10} max={1000} value={50} className="input" />
                 </div>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-ink-muted mb-2">Output Format</label>
-                <select className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500">
+                <select className="input">
                   <option value="cog">Cloud Optimized GeoTIFF</option>
                   <option value="netcdf">NetCDF</option>
                   <option value="zarr">Zarr</option>
@@ -123,7 +123,7 @@ export function ForecastingPage() {
               <button
                 onClick={() => { /* handleSubmit() */ }}
                 disabled={false}
-                className="w-full px-4 py-2 text-sm font-medium text-[#04121d] bg-brand-500 hover:bg-brand-400 rounded-lg transition-colors flex items-center justify-center gap-2"
+                className="w-full btn btn-primary flex items-center justify-center gap-2"
               >
                 <Zap className="w-4 h-4" />
                 Run Forecast
@@ -132,7 +132,7 @@ export function ForecastingPage() {
           </div>
 
           <div className="flex-1 overflow-y-auto p-4">
-            <div className="bg-surface-sunken bg-surface/60 rounded-xl p-6">
+            <div className="bg-surface/60 rounded-xl p-6">
               <h2 className="text-xl font-bold text-ink mb-4">Forecast Results</h2>
               <p className="text-center text-ink-faint py-12">Configure parameters and run forecast to see results</p>
             </div>

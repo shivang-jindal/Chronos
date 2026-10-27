@@ -36,7 +36,7 @@ export function AIChatPage() {
 
   return (
     <div className="flex h-full flex-col bg-surface">
-      <div className="border-b border-line p-4 border-line">
+      <div className="border-b border-line p-4">
         <div className="flex items-center gap-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-brand-400 to-brand-600">
             <Sparkles className="h-5 w-5 text-[#04121d]" />
@@ -82,7 +82,7 @@ export function AIChatPage() {
         ))}
       </div>
 
-      <div className="border-t border-line p-4 border-line">
+      <div className="border-t border-line p-4">
         <div className="flex items-end gap-2">
           <textarea
             value={input}
@@ -95,12 +95,12 @@ export function AIChatPage() {
             }}
             rows={1}
             placeholder="Ask about Earth's changes..."
-            className="max-h-32 min-h-[44px] flex-1 resize-none rounded-lg border border-line bg-surface-raised px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 border-line bg-surface-raised"
+            className="textarea max-h-32 min-h-[44px] flex-1 resize-none"
           />
           <button
             onClick={handleSend}
             disabled={!input.trim()}
-            className="rounded-lg bg-brand-500 p-2.5 text-[#04121d] transition-colors hover:bg-brand-400 disabled:cursor-not-allowed disabled:opacity-50"
+            className="btn btn-primary p-2.5"
             aria-label="Send message"
           >
             <Send className="h-5 w-5" />

@@ -96,7 +96,7 @@ export function LayerPanel({ isOpen, onClose }: LayerPanelProps) {
           <input
             type="text"
             placeholder="Search layers..."
-            className="w-full pl-10 pr-4 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+            className="input pl-10 pr-4"
           />
         </div>
       </div>
@@ -165,7 +165,7 @@ export function LayerPanel({ isOpen, onClose }: LayerPanelProps) {
                         <select
                           value={config.style}
                           onChange={(e) => handleStyleChange(layerId, e.target.value)}
-                          className="flex-1 px-2 py-1 text-xs bg-surface-raised border border-line rounded focus:outline-none focus:ring-1 focus:ring-brand-500"
+                          className="input flex-1 px-2 py-1 text-xs"
                           aria-label={`${label} visualization style`}
                         >
                           {VISUALIZATION_STYLES.map((style) => (
@@ -209,21 +209,21 @@ export function LayerPanel({ isOpen, onClose }: LayerPanelProps) {
       <div className="p-4 border-t border-line space-y-2">
         <button
           onClick={() => { /* add new layer */ }}
-          className="w-full flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-brand-300 hover:bg-brand-500/10 rounded-lg transition-colors"
+          className="btn btn-ghost w-full flex items-center justify-center gap-2 text-brand-300"
         >
           <Layers className="w-4 h-4" />
           <span>Add Layer</span>
         </button>
         <button
           onClick={() => { /* save layer preset */ }}
-          className="w-full flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-ink-muted hover:bg-white/5 rounded-lg transition-colors"
+          className="w-full flex items-center justify-center gap-2 btn btn-ghost"
         >
           <Download className="w-4 h-4" />
           <span>Save Preset</span>
         </button>
         <button
           onClick={() => { /* load layer preset */ }}
-          className="w-full flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-ink-muted hover:bg-white/5 rounded-lg transition-colors"
+          className="w-full flex items-center justify-center gap-2 btn btn-ghost"
         >
           <Upload className="w-4 h-4" />
           <span>Load Preset</span>

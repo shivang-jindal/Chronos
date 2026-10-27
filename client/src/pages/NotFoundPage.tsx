@@ -10,7 +10,7 @@ export function NotFoundPage() {
       </p>
       <Link
         to="/globe"
-        className="mt-6 rounded-lg bg-brand-500 px-4 py-2 text-sm font-medium text-[#04121d] transition-colors hover:bg-brand-400"
+        className="btn btn-primary mt-6"
       >
         Back to the globe
       </Link>

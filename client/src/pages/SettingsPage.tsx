@@ -11,7 +11,7 @@ export function SettingsPage() {
 
       <section className="mt-8 max-w-2xl space-y-3">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-ink-faint">Visualisation</h2>
-        <div className="rounded-xl border border-line p-4 border-line">
+        <div className="card p-4">
           <label htmlFor="visualization-style" className="block text-sm font-medium text-ink-muted">
             Default visualization style
           </label>
@@ -19,7 +19,7 @@ export function SettingsPage() {
             id="visualization-style"
             value={visualizationStyle}
             onChange={(e) => setVisualizationStyle(e.target.value)}
-            className="mt-2 w-full rounded-lg border border-line bg-surface-raised px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 border-line bg-surface-raised"
+            className="input mt-2"
           >
             {VISUALIZATION_STYLES.map((style) => (
               <option key={style} value={style}>{style}</option>
@@ -30,7 +30,7 @@ export function SettingsPage() {
 
       <section className="mt-8 max-w-2xl space-y-3">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-ink-faint">Temporal</h2>
-        <div className="rounded-xl border border-line p-4 border-line">
+        <div className="card p-4">
           <label htmlFor="resolution" className="block text-sm font-medium text-ink-muted">
             Timeline resolution
           </label>
@@ -38,7 +38,7 @@ export function SettingsPage() {
             id="resolution"
             value={temporal.resolution}
             onChange={(e) => setResolution(e.target.value as typeof temporal.resolution)}
-            className="mt-2 w-full rounded-lg border border-line bg-surface-raised px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 border-line bg-surface-raised"
+            className="input mt-2"
           >
             {TEMPORAL_RESOLUTIONS.map((resolution) => (
               <option key={resolution} value={resolution}>{resolution}</option>

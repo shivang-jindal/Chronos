@@ -62,7 +62,7 @@ export function ChangeDetectionModal({ isOpen, onClose }: ChangeDetectionModalPr
             <select
               value={params.layer}
               onChange={(e) => setParams({ ...params, layer: e.target.value })}
-              className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+              className="input"
             >
               {TEMPORAL_LAYERS.map((l) => (
                 <option key={l} value={l}>{l.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}</option>
@@ -77,7 +77,7 @@ export function ChangeDetectionModal({ isOpen, onClose }: ChangeDetectionModalPr
                 type="date"
                 value={params.startDate}
                 onChange={(e) => setParams({ ...params, startDate: e.target.value })}
-                className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                className="input"
               />
             </div>
             <div>
@@ -86,7 +86,7 @@ export function ChangeDetectionModal({ isOpen, onClose }: ChangeDetectionModalPr
                 type="date"
                 value={params.endDate}
                 onChange={(e) => setParams({ ...params, endDate: e.target.value })}
-                className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                className="input"
               />
             </div>
           </div>
@@ -96,7 +96,7 @@ export function ChangeDetectionModal({ isOpen, onClose }: ChangeDetectionModalPr
             <select
               value={params.algorithm}
               onChange={(e) => setParams({ ...params, algorithm: e.target.value })}
-              className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+              className="input"
             >
               {CHANGE_DETECTION_ALGORITHMS.map((a) => (
                 <option key={a} value={a}>{a.toUpperCase()}</option>
@@ -158,7 +158,7 @@ export function ChangeDetectionModal({ isOpen, onClose }: ChangeDetectionModalPr
             <select
               value={params.outputFormat}
               onChange={(e) => setParams({ ...params, outputFormat: e.target.value })}
-              className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+              className="input"
             >
               <option value="geojson">GeoJSON</option>
               <option value="cog">Cloud Optimized GeoTIFF</option>
@@ -198,13 +198,13 @@ export function ChangeDetectionModal({ isOpen, onClose }: ChangeDetectionModalPr
         </div>
 
         <div className="flex items-center justify-end gap-3 p-4 border-t border-line">
-          <button onClick={onClose} className="px-4 py-2 text-sm font-medium text-ink-muted hover:bg-white/5 rounded-lg transition-colors">
+          <button onClick={onClose} className="btn btn-ghost">
             Cancel
           </button>
           <button
             onClick={handleSubmit}
             disabled={running}
-            className="px-4 py-2 text-sm font-medium text-[#04121d] bg-brand-500 hover:bg-brand-400 disabled:opacity-50 rounded-lg transition-colors flex items-center gap-2"
+            className="btn btn-primary flex items-center gap-2"
           >
             {running ? <Loader2 className="w-4 h-4 animate-spin" /> : <Zap className="w-4 h-4" />}
             {running ? 'Running...' : 'Run Detection'}

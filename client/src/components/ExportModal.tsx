@@ -46,7 +46,7 @@ export function ExportModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                 max={180}
                 value={bbox.west}
                 onChange={(e) => setBbox({ ...bbox, west: parseFloat(e.target.value) })}
-                className="px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                className="input"
                 placeholder="West"
               />
               <input
@@ -56,7 +56,7 @@ export function ExportModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                 max={90}
                 value={bbox.south}
                 onChange={(e) => setBbox({ ...bbox, south: parseFloat(e.target.value) })}
-                className="px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                className="input"
                 placeholder="South"
               />
               <input
@@ -66,7 +66,7 @@ export function ExportModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                 max={180}
                 value={bbox.east}
                 onChange={(e) => setBbox({ ...bbox, east: parseFloat(e.target.value) })}
-                className="px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                className="input"
                 placeholder="East"
               />
               <input
@@ -76,7 +76,7 @@ export function ExportModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                 max={90}
                 value={bbox.north}
                 onChange={(e) => setBbox({ ...bbox, north: parseFloat(e.target.value) })}
-                className="px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                className="input"
                 placeholder="North"
               />
             </div>
@@ -91,13 +91,13 @@ export function ExportModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="flex-1 px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                className="flex-1 input"
               />
               <input
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="flex-1 px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                className="flex-1 input"
               />
             </div>
           </div>
@@ -108,7 +108,7 @@ export function ExportModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
             <select
               value={style}
               onChange={(e) => setStyle(e.target.value)}
-              className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+              className="input"
             >
               {VISUALIZATION_STYLES.map((style) => (
                 <option key={style} value={style}>
@@ -128,7 +128,7 @@ export function ExportModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
               value={resolution}
               onChange={(e) => setResolution(e.target.value)}
               placeholder="Auto (based on zoom)"
-              className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+              className="input"
             />
           </div>
 
@@ -138,7 +138,7 @@ export function ExportModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
             <select
               value={crs}
               onChange={(e) => setCrs(e.target.value)}
-              className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+              className="input"
             >
               <option value="EPSG:4326">EPSG:4326 (WGS84)</option>
               <option value="EPSG:3857">EPSG:3857 (Web Mercator)</option>
@@ -167,7 +167,7 @@ export function ExportModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                   max="100"
                   value={compression.quality}
                   onChange={(e) => setCompression({ ...compression, quality: parseInt(e.target.value) })}
-                  className="w-24 px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                  className="w-24 input"
                 />
               </div>
             )}
@@ -179,7 +179,7 @@ export function ExportModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
             <select
               value={exportLayer}
               onChange={(e) => setExportLayer(e.target.value)}
-              className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+              className="input"
             >
               <option value="landsat">Landsat</option>
               <option value="sentinel2">Sentinel-2</option>
@@ -194,7 +194,7 @@ export function ExportModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
             <select
               value={format}
               onChange={(e) => setFormat(e.target.value)}
-              className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+              className="input"
             >
               {EXPORT_FORMATS.map((f) => (
                 <option key={f} value={f}>
@@ -206,10 +206,10 @@ export function ExportModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
         </div>
 
         <div className="flex justify-end gap-2 p-4 border-t border-line">
-          <button onClick={onClose} className="px-4 py-2 text-sm font-medium text-ink-muted hover:bg-white/5 rounded-lg transition-colors">
+          <button onClick={onClose} className="btn btn-ghost">
             Cancel
           </button>
-          <button onClick={handleSubmit} className="px-4 py-2 text-sm font-medium text-[#04121d] bg-brand-500 hover:bg-brand-400 rounded-lg transition-colors">
+          <button onClick={handleSubmit} className="btn btn-primary">
             Start Export
           </button>
         </div>

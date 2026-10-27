@@ -246,7 +246,7 @@ export function AIChatModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
           onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } }}
           placeholder="Ask about Earth's changes..."
           rows={1}
-          className="flex-1 px-4 py-2.5 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 resize-none min-h-[44px] max-h-32"
+          className="textarea flex-1 resize-none min-h-[44px] max-h-32"
           disabled={sending}
         />
         <div className="flex items-center gap-1">
@@ -261,7 +261,7 @@ export function AIChatModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
           <button
             onClick={handleSend}
             disabled={!input.trim() || sending}
-            className="p-2.5 rounded-lg bg-brand-500 text-[#04121d] hover:bg-brand-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="btn btn-primary p-2.5"
             aria-label="Send message"
           >
             {sending ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}

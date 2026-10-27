@@ -112,7 +112,7 @@ export function HelpModal({ isOpen, onClose }: HelpModalProps) {
                     { title: '5. Forecast the Future', desc: 'Use the Forecasting panel to predict future changes with AI models.' },
                     { title: '6. Build Scenarios', desc: 'Create what-if scenarios with policy levers and climate models.' }
                   ].map((item, i) => (
-                    <div key={i} className="bg-surface-sunken bg-surface/60 rounded-lg p-4 border-l-4 border-brand-500">
+                    <div key={i} className="bg-surface/60 rounded-lg p-4 border-l-4 border-brand-500">
                       <h4 className="font-semibold text-ink mb-1">{item.title}</h4>
                       <p className="text-ink-muted text-sm">{item.desc}</p>
                     </div>
@@ -142,7 +142,7 @@ export function HelpModal({ isOpen, onClose }: HelpModalProps) {
                     ['E', 'Export'],
                     ['?', 'Help']
                   ].map(([keys, action]) => (
-                    <div key={action} className="bg-surface-sunken bg-surface/60 rounded-lg p-3">
+                    <div key={action} className="bg-surface/60 rounded-lg p-3">
                       <kbd className="px-2 py-0.5 bg-surface-raised rounded text-xs font-mono">{keys}</kbd>
                       <span className="text-sm text-ink-muted ml-2">{action}</span>
                     </div>
@@ -186,11 +186,11 @@ export function HelpModal({ isOpen, onClose }: HelpModalProps) {
                     { keys: 'R', action: 'Reset to present' }
                   ]}
                 ].map((cat) => (
-                  <div key={cat.category} className="bg-surface-sunken bg-surface/60 rounded-lg p-4">
+                  <div key={cat.category} className="bg-surface/60 rounded-lg p-4">
                     <h4 className="font-semibold text-ink mb-3">{cat.category}</h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                       {cat.shortcuts.map((s, i) => (
-                        <div key={i} className="flex items-center gap-3 p-2 bg-surface-sunken bg-surface/60 rounded">
+                        <div key={i} className="flex items-center gap-3 p-2 bg-surface/60 rounded">
                           <kbd className="px-2 py-0.5 bg-surface-raised rounded text-xs font-mono">{s.keys}</kbd>
                           <span className="text-sm text-ink-muted">{s.action}</span>
                         </div>
@@ -207,7 +207,7 @@ export function HelpModal({ isOpen, onClose }: HelpModalProps) {
               <h3 className="text-xl font-bold text-ink mb-4">Frequently Asked Questions</h3>
               <div className="space-y-4">
                 {faqs.map((faq, i) => (
-                  <details key={i} className="group bg-surface-sunken bg-surface/60 rounded-lg border border-line">
+                  <details key={i} className="group bg-surface/60 rounded-lg border border-line">
                     <summary className="p-4 cursor-pointer list-none flex items-center justify-between">
                       <span className="font-medium text-ink">{faq.q}</span>
                       <ChevronDown className="w-5 h-5 text-ink-faint group-open:rotate-180 transition-transform" />
@@ -223,19 +223,19 @@ export function HelpModal({ isOpen, onClose }: HelpModalProps) {
 
           <div className="pt-4 border-t border-line">
             <div className="flex flex-wrap gap-2">
-              <a href="https://github.com/shivang-jindal/Chronos" target="_blank" className="px-4 py-2 text-sm font-medium text-brand-300 hover:bg-brand-500/10 rounded-lg transition-colors flex items-center gap-2">
+              <a href="https://github.com/shivang-jindal/Chronos" target="_blank" className="btn btn-ghost flex items-center gap-2 text-brand-300">
                 <Github className="w-4 h-4" />
                 GitHub Repository
               </a>
-              <a href="https://github.com/shivang-jindal/Chronos/issues" target="_blank" className="px-4 py-2 text-sm font-medium text-brand-300 hover:bg-brand-500/10 rounded-lg transition-colors flex items-center gap-2">
+              <a href="https://github.com/shivang-jindal/Chronos/issues" target="_blank" className="btn btn-ghost flex items-center gap-2 text-brand-300">
                 <AlertCircle className="w-4 h-4" />
                 Report Issue
               </a>
-              <a href="https://github.com/shivang-jindal/Chronos/discussions" target="_blank" className="px-4 py-2 text-sm font-medium text-brand-300 hover:bg-brand-500/10 rounded-lg transition-colors flex items-center gap-2">
+              <a href="https://github.com/shivang-jindal/Chronos/discussions" target="_blank" className="btn btn-ghost flex items-center gap-2 text-brand-300">
                 <MessageSquare className="w-4 h-4" />
                 Discussions
               </a>
-              <a href="https://discord.gg/chronos-earth" target="_blank" className="px-4 py-2 text-sm font-medium text-brand-300 hover:bg-brand-500/10 rounded-lg transition-colors flex items-center gap-2">
+              <a href="https://discord.gg/chronos-earth" target="_blank" className="btn btn-ghost flex items-center gap-2 text-brand-300">
                 <MessageSquare className="w-4 h-4" />
                 Discord
               </a>

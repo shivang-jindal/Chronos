@@ -103,11 +103,11 @@ export function ShareModal({ isOpen, onClose }: ShareModalProps) {
                   type="text"
                   value={fullUrl}
                   readOnly
-                  className="flex-1 px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                  className="flex-1 input"
                 />
                 <button
                   onClick={handleCopy}
-                  className="px-4 py-2 text-sm font-medium text-[#04121d] bg-brand-500 hover:bg-brand-400 rounded-lg flex items-center gap-2"
+                  className="btn btn-primary flex items-center gap-2"
                 >
                   <Copy className="w-4 h-4" />
                   Copy
@@ -126,11 +126,11 @@ export function ShareModal({ isOpen, onClose }: ShareModalProps) {
                   readOnly
                   value={`<iframe src="${fullUrl}" width="100%" height="500" frameborder="0" allowfullscreen></iframe>`}
                   rows={4}
-                  className="w-full px-3 py-2 text-sm font-mono bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 resize-none"
+                  className="textarea w-full font-mono resize-none"
                 />
                 <button
                   onClick={handleEmbedCopy}
-                  className="absolute right-2 top-2 px-3 py-1 text-xs font-medium text-[#04121d] bg-brand-500 hover:bg-brand-400 rounded transition-colors"
+                  className="btn btn-primary absolute right-2 top-2 px-3 py-1 text-xs"
                 >
                   Copy
                 </button>
@@ -149,7 +149,7 @@ export function ShareModal({ isOpen, onClose }: ShareModalProps) {
                   <span className="text-sm font-medium text-ink-muted">Scene Data</span>
                   <button
                     onClick={() => navigator.clipboard.writeText(JSON.stringify(sceneData, null, 2))}
-                    className="px-3 py-1 text-xs font-medium text-brand-300 hover:bg-brand-500/15 rounded transition-colors"
+                    className="btn btn-ghost px-3 py-1 text-xs text-brand-300"
                   >
                     <Copy className="w-3 h-3 mr-1" /> Copy JSON
                   </button>
@@ -163,7 +163,7 @@ export function ShareModal({ isOpen, onClose }: ShareModalProps) {
         </div>
 
         <div className="flex items-center justify-end gap-3 p-4 border-t border-line">
-          <button onClick={onClose} className="px-4 py-2 text-sm font-medium text-ink-muted hover:bg-white/5 rounded-lg transition-colors">
+          <button onClick={onClose} className="btn btn-ghost">
             Close
           </button>
         </div>

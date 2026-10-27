@@ -105,7 +105,7 @@ export function TemporalControl() {
           max={2050}
           value={temporal.currentYear}
           onChange={handleYearChange}
-          className="w-20 px-2 py-1.5 text-sm font-mono text-center bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+          className="input w-20 px-2 py-1.5 font-mono text-center"
           aria-label="Current year"
         />
 
@@ -113,7 +113,7 @@ export function TemporalControl() {
         <select
           value={temporal.resolution}
           onChange={(e) => handleResolutionChange(e.target.value as 'year' | 'quarter' | 'month' | 'week' | 'day')}
-          className="px-2 py-1.5 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+          className="input px-2 py-1.5"
           aria-label="Temporal resolution"
         >
           {TEMPORAL_RESOLUTIONS.map((res) => (
@@ -133,7 +133,7 @@ export function TemporalControl() {
           max={2050}
           value={temporal.startYear}
           onChange={handleStartYearChange}
-          className="w-16 px-2 py-1.5 text-sm font-mono text-center bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+          className="input w-16 px-2 py-1.5 font-mono text-center"
           aria-label="Start year"
         />
         <span className="text-ink-faint">–</span>
@@ -146,7 +146,7 @@ export function TemporalControl() {
           max={2050}
           value={temporal.endYear}
           onChange={handleEndYearChange}
-          className="w-16 px-2 py-1.5 text-sm font-mono text-center bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+          className="input w-16 px-2 py-1.5 font-mono text-center"
           aria-label="End year"
         />
       </div>
@@ -156,7 +156,7 @@ export function TemporalControl() {
         <select
           value={visualizationStyle}
           onChange={(e) => setVisualizationStyle(e.target.value)}
-          className="px-2 py-1.5 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+          className="input px-2 py-1.5"
           aria-label="Visualization style"
         >
           {VISUALIZATION_STYLES.map((style) => (
@@ -199,7 +199,7 @@ export function TemporalControl() {
         <select
           value={1}
           onChange={(e) => { /* setAnimationSpeed(Number(e.target.value)); */ }}
-          className="px-2 py-1.5 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+          className="input px-2 py-1.5"
           aria-label="Animation speed"
         >
           {[0.25, 0.5, 1, 2, 5, 10].map((speed) => (

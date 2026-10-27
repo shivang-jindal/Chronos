@@ -59,7 +59,7 @@ export function ChangeDetectionPage() {
                 <select
                   value={params.layer}
                   onChange={(e) => setParams({ ...params, layer: e.target.value })}
-                  className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                  className="input"
                 >
                   {['landsat_annual', 'sentinel2_annual', 'planet_nicfi_annual', 'night_lights_annual', 'urban_extents_annual', 'water_annual', 'glacier_annual', 'coastline_annual', 'cropland_annual', 'sea_ice_annual'].map((l) => (
                     <option key={l} value={l}>{l.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}</option>
@@ -70,17 +70,17 @@ export function ChangeDetectionPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-ink-muted mb-2">Start Date</label>
-                  <input type="date" value={params.startDate} onChange={(e) => setParams({ ...params, startDate: e.target.value })} className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500" />
+                  <input type="date" value={params.startDate} onChange={(e) => setParams({ ...params, startDate: e.target.value })} className="input" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-ink-muted mb-2">End Date</label>
-                  <input type="date" value={params.endDate} onChange={(e) => setParams({ ...params, endDate: e.target.value })} className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500" />
+                  <input type="date" value={params.endDate} onChange={(e) => setParams({ ...params, endDate: e.target.value })} className="input" />
                 </div>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-ink-muted mb-2">Algorithm</label>
-                <select value={params.algorithm} onChange={(e) => setParams({ ...params, algorithm: e.target.value })} className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500">
+                <select value={params.algorithm} onChange={(e) => setParams({ ...params, algorithm: e.target.value })} className="input">
                   {['ccdc', 'radd', 'bfast', 'landtrendr', 'tscd', 'sma'].map((a) => (
                     <option key={a} value={a}>{a.toUpperCase()}</option>
                   ))}
@@ -112,7 +112,7 @@ export function ChangeDetectionPage() {
 
               <div>
                 <label className="block text-sm font-medium text-ink-muted mb-2">Output Format</label>
-                <select className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500">
+                <select className="input">
                   <option value="geojson">GeoJSON</option>
                   <option value="cog">Cloud Optimized GeoTIFF</option>
                   <option value="netcdf">NetCDF</option>
@@ -124,7 +124,7 @@ export function ChangeDetectionPage() {
               <button
                 onClick={() => { /* handleSubmit() */ }}
                 disabled={false}
-                className="w-full px-4 py-2 text-sm font-medium text-[#04121d] bg-brand-500 hover:bg-brand-400 rounded-lg transition-colors flex items-center justify-center gap-2"
+                className="w-full btn btn-primary flex items-center justify-center gap-2"
               >
                 <Zap className="w-4 h-4" />
                 Run Detection
@@ -134,7 +134,7 @@ export function ChangeDetectionPage() {
 
           {/* Results Panel */}
           <div className="flex-1 overflow-y-auto p-4">
-            <div className="bg-surface-sunken bg-surface/60 rounded-xl p-6">
+            <div className="bg-surface/60 rounded-xl p-6">
               <h2 className="text-xl font-bold text-ink mb-4">Change Detection Results</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                 <div className="bg-surface-raised p-4 rounded-lg">

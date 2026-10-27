@@ -89,7 +89,7 @@ export function ForecastingModal({ isOpen, onClose }: ForecastingModalProps) {
                 <select
                   value={params.layer}
                   onChange={(e) => setParams({ ...params, layer: e.target.value })}
-                  className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                  className="input"
                 >
                   {TEMPORAL_LAYERS.map((l) => (
                     <option key={l} value={l}>{l.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}</option>
@@ -103,7 +103,7 @@ export function ForecastingModal({ isOpen, onClose }: ForecastingModalProps) {
                   <select
                     value={params.location.type}
                     onChange={(e) => setParams({ ...params, location: { ...params.location, type: e.target.value } })}
-                    className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                    className="input"
                   >
                     <option value="point">Point</option>
                     <option value="bbox">Bounding Box</option>
@@ -119,7 +119,7 @@ export function ForecastingModal({ isOpen, onClose }: ForecastingModalProps) {
                       placeholder="Longitude"
                       value={params.location.coordinates?.[0] || ''}
                       onChange={(e) => setParams({ ...params, location: { ...params.location, coordinates: [parseFloat(e.target.value), params.location.coordinates?.[1] || 0] } })}
-                      className="px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                      className="input"
                     />
                     <input
                       type="number"
@@ -127,7 +127,7 @@ export function ForecastingModal({ isOpen, onClose }: ForecastingModalProps) {
                       placeholder="Latitude"
                       value={params.location.coordinates?.[1] || ''}
                       onChange={(e) => setParams({ ...params, location: { ...params.location, coordinates: [params.location.coordinates?.[0] || 0, parseFloat(e.target.value)] } })}
-                      className="px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                      className="input"
                     />
                   </div>
                 </div>
@@ -142,7 +142,7 @@ export function ForecastingModal({ isOpen, onClose }: ForecastingModalProps) {
                     max="50"
                     value={params.horizonYears}
                     onChange={(e) => setParams({ ...params, horizonYears: parseInt(e.target.value) })}
-                    className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                    className="input"
                   />
                 </div>
                 <div>
@@ -150,7 +150,7 @@ export function ForecastingModal({ isOpen, onClose }: ForecastingModalProps) {
                   <select
                     value={params.model}
                     onChange={(e) => setParams({ ...params, model: e.target.value })}
-                    className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                    className="input"
                   >
                     {FORECASTING_MODELS.map((m) => (
                       <option key={m} value={m}>{m.charAt(0).toUpperCase() + m.slice(1)}</option>
@@ -165,7 +165,7 @@ export function ForecastingModal({ isOpen, onClose }: ForecastingModalProps) {
                   <select
                     value={params.scenario}
                     onChange={(e) => setParams({ ...params, scenario: e.target.value })}
-                    className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                    className="input"
                   >
                     {SCENARIO_FORCINGS.map((s) => (
                       <option key={s} value={s}>{s.toUpperCase()}</option>
@@ -181,7 +181,7 @@ export function ForecastingModal({ isOpen, onClose }: ForecastingModalProps) {
                     max="0.99"
                     value={params.confidenceLevel}
                     onChange={(e) => setParams({ ...params, confidenceLevel: parseFloat(e.target.value) })}
-                    className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                    className="input"
                   />
                 </div>
               </div>
@@ -195,7 +195,7 @@ export function ForecastingModal({ isOpen, onClose }: ForecastingModalProps) {
                     max="1000"
                     value={params.ensembleSize}
                     onChange={(e) => setParams({ ...params, ensembleSize: parseInt(e.target.value) })}
-                    className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                    className="input"
                   />
                 </div>
                 <div>
@@ -203,7 +203,7 @@ export function ForecastingModal({ isOpen, onClose }: ForecastingModalProps) {
                   <select
                     value={params.outputFormat}
                     onChange={(e) => setParams({ ...params, outputFormat: e.target.value })}
-                    className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                    className="input"
                   >
                     {EXPORT_FORMATS.map((f) => (
                       <option key={f} value={f}>{f.toUpperCase()}</option>
@@ -216,7 +216,7 @@ export function ForecastingModal({ isOpen, onClose }: ForecastingModalProps) {
 
           {activeTab === 'results' && results && (
             <div className="space-y-6">
-              <div className="p-4 bg-surface-sunken bg-surface-raised rounded-lg">
+              <div className="p-4 bg-surface-raised rounded-lg">
                 <h3 className="text-lg font-semibold text-ink mb-2">Forecast Results</h3>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>

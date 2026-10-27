@@ -1,11 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { Outlet, useLocation, NavLink, useNavigate } from 'react-router-dom';
-import { Menu, X, Globe, Layers, Zap, Brain, Search, Settings, HelpCircle, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Play, Pause, SkipBack, SkipForward, RotateCcw, Download, Share2, Mic, Maximize, Minimize, History, Zap as ZapIcon, Globe as GlobeIcon, Brain as BrainIcon, Layers as LayersIcon2, Settings as SettingsIcon } from 'lucide-react';
+import { Menu, X, Globe, Layers, Zap, Brain, Search, Settings, HelpCircle, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Play, Pause, SkipBack, SkipForward, RotateCcw, Download, Share2, Mic, Maximize, Minimize, History, Briefcase, Zap as ZapIcon, Globe as GlobeIcon, Brain as BrainIcon, Layers as LayersIcon2, Settings as SettingsIcon } from 'lucide-react';
 import { useToast } from './Toast';
 import { useChronosStore } from '../store/chronosStore';
 import { TemporalControl } from './TemporalControl';
 import { LayerPanel } from './LayerPanel';
-import { AIChatPanel } from './AIChatPanel';
 import { ShareModal } from './ShareModal';
 import { ExportModal } from './ExportModal';
 import { ScenarioBuilderModal } from './ScenarioBuilderModal';
@@ -16,6 +15,7 @@ import { SettingsModal } from './SettingsModal';
 import { HelpModal } from './HelpModal';
 
 const NAV_ITEMS = [
+  { to: '/workbench', label: 'Workbench', icon: Briefcase },
   { to: '/globe', label: 'Globe', icon: GlobeIcon },
   { to: '/change-detection', label: 'Change Detection', icon: History },
   { to: '/forecasting', label: 'Forecasting', icon: ZapIcon },
@@ -161,8 +161,8 @@ export function AppShell() {
             <Menu className="w-6 h-6" />
           </button>
 
-          <div className="flex-1 flex items-center justify-center">
-            <div className="flex items-center gap-2">
+          <div className="flex min-w-0 flex-1 items-center justify-center">
+            <div className="flex min-w-0 max-w-full items-center gap-2 overflow-x-auto">
               <TemporalControl />
             </div>
           </div>
@@ -257,12 +257,9 @@ export function AppShell() {
             <Outlet />
           </div>
 
-          {/* Side Panels */}
-          {sidebarOpen && (
-            <>
-              <LayerPanel isOpen={true} onClose={() => setSidebarOpen(false)} />
-              <AIChatPanel isOpen={false} onClose={() => {}} />
-            </>
+          {/* The layer panel is a globe tool; other routes get the full canvas. */}
+          {sidebarOpen && location.pathname === '/globe' && (
+            <LayerPanel isOpen={true} onClose={() => setSidebarOpen(false)} />
           )}
 
           {/* Modals */}

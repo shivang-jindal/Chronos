@@ -1,23 +1,73 @@
 import { useState } from 'react';
-import { X, ChevronDown, ChevronUp, Eye, EyeOff, SlidersHorizontal, Trash2, Download, Edit, Copy, Sparkles, MessageSquare, Mic, Volume2, VolumeX, Brain, Zap, Layers, Globe, History, Settings, HelpCircle, Camera, Video, Image, FileText, Map, Share2, Download as DownloadIcon, Copy as CopyIcon, Trash2 as Trash2Icon, Layers as LayersIcon, Download as DownloadIcon2 } from 'lucide-react';
-import { useChronosStore } from '../store/chronosStore';
-import { CHANGE_TYPES, CHANGE_TYPE_METADATA, TEMPORAL_LAYERS, CHANGE_DETECTION_ALGORITHMS, TEMPORAL_LAYERS as TL, CHANGE_TYPES as CT, CHANGE_TYPE_METADATA as CTM } from '@chronos/shared';
+import { useNavigate } from 'react-router-dom';
+import {
+  CHANGE_DETECTION_ALGORITHMS,
+  CHANGE_TYPE_METADATA,
+  CHANGE_TYPES,
+  TEMPORAL_LAYERS,
+  type ChangeDetectionResult,
+  type ChangeType
+} from '@chronos/shared';
+import { Download, Loader2, Play, Save, SlidersHorizontal, Sparkles } from 'lucide-react';
+
 import { useToast } from '../components/Toast';
+import { workspaceApi } from '../lib/workspace';
+
+const DEFAULT_BBOX = { west: -180, south: -60, east: 180, north: 80 };
+
+function titleCase(value: string): string {
+  return value.replace(/_/g, ' ').replace(/\b\w/g, (character) => character.toUpperCase());
+}
+
+function downloadGeoJson(result: ChangeDetectionResult): void {
+  const collection = {
+    type: 'FeatureCollection',
+    features: result.changes.map((change) => ({
+      type: 'Feature',
+      id: change.id,
+      geometry: change.geometry,
+      properties: {
+        changeType: change.type,
+        areaHa: change.areaHa,
+        confidence: change.confidence,
+        detectedAt: change.detectedAt
+      }
+    }))
+  };
+  const blob = new Blob([JSON.stringify(collection, null, 2)], { type: 'application/geo+json' });
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement('a');
+  anchor.href = url;
+  anchor.download = `chronos-changes-${result.id.slice(0, 8)}.geojson`;
+  anchor.click();
+  URL.revokeObjectURL(url);
+}
 
 export function ChangeDetectionPage() {
   const { addToast } = useToast();
+  const navigate = useNavigate();
+
   const [params, setParams] = useState({
-    layer: 'landsat_annual',
+    layer: 'landsat_annual' as (typeof TEMPORAL_LAYERS)[number],
     startDate: '2020-01-01',
     endDate: '2024-12-31',
-    algorithm: 'ccdc',
-    changeTypes: [] as string[],
+    algorithm: 'ccdc' as (typeof CHANGE_DETECTION_ALGORITHMS)[number],
+    changeTypes: [] as ChangeType[],
     confidenceThreshold: 0.6,
-    minAreaHa: 0.1,
-    outputFormat: 'geojson'
+    minAreaHa: 0.1
   });
   const [running, setRunning] = useState(false);
-  const [results, setResults] = useState<any>(null);
+  const [saving, setSaving] = useState(false);
+  const [results, setResults] = useState<ChangeDetectionResult | null>(null);
+
+  const toggleType = (type: ChangeType) => {
+    setParams((current) => ({
+      ...current,
+      changeTypes: current.changeTypes.includes(type)
+        ? current.changeTypes.filter((candidate) => candidate !== type)
+        : [...current.changeTypes, type]
+    }));
+  };
 
   const handleSubmit = async () => {
     setRunning(true);
@@ -25,134 +75,337 @@ export function ChangeDetectionPage() {
       const response = await fetch('/api/v1/change-detection', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(params)
+        body: JSON.stringify({
+          ...params,
+          bbox: DEFAULT_BBOX,
+          changeTypes: params.changeTypes.length > 0 ? params.changeTypes : undefined,
+          outputFormat: 'geojson'
+        })
       });
-      if (response.ok) {
-        const data = await response.json();
-        setResults(data);
-        addToast({ type: 'success', title: 'Analysis Complete', message: `Found ${data.summary.totalChanges} changes` });
-      } else {
-        throw new Error('Change detection failed');
-      }
+      if (!response.ok) throw new Error('Change detection failed');
+      const data = (await response.json()) as ChangeDetectionResult;
+      setResults(data);
+      addToast({
+        type: 'success',
+        title: 'Analysis complete',
+        message: `${data.summary.totalChanges} changes across ${data.summary.totalAreaHa.toLocaleString()} ha`
+      });
     } catch (error) {
-      addToast({ type: 'error', title: 'Failed', message: error instanceof Error ? error.message : 'Unexpected error' });
+      addToast({
+        type: 'error',
+        title: 'Detection failed',
+        message: error instanceof Error ? error.message : 'Unexpected error'
+      });
     } finally {
       setRunning(false);
     }
   };
 
+  const saveAndRun = async () => {
+    setSaving(true);
+    try {
+      const project = await workspaceApi.createProject({
+        name: `${titleCase(params.layer)} ${params.startDate.slice(0, 4)}–${params.endDate.slice(0, 4)}`,
+        config: {
+          ...params,
+          bbox: DEFAULT_BBOX,
+          changeTypes: params.changeTypes.length > 0 ? params.changeTypes : undefined,
+          outputFormat: 'geojson'
+        }
+      });
+      await workspaceApi.runProject(project.id);
+      addToast({ type: 'success', title: 'Saved to the workbench', message: 'The brief is stored with its method.' });
+      navigate(`/workbench?project=${project.id}`);
+    } catch (error) {
+      addToast({
+        type: 'error',
+        title: 'Could not save the project',
+        message: error instanceof Error ? error.message : 'Unexpected error'
+      });
+    } finally {
+      setSaving(false);
+    }
+  };
+
   return (
-    <div className="h-full flex flex-col">
-      <div className="p-4 border-b border-line">
-        <h1 className="text-2xl font-bold text-ink">Change Detection</h1>
-        <p className="text-ink-muted mt-1">Detect and analyze changes in Earth's surface over time</p>
-      </div>
+    <div className="h-full overflow-y-auto">
+      <div className="mx-auto w-full max-w-[1400px] p-5">
+        <header className="mb-5">
+          <h1 className="text-2xl font-bold text-ink">Change detection</h1>
+          <p className="mt-1 max-w-3xl text-sm text-ink-muted">
+            Run a detector over a saved window, inspect the polygons, and keep the result as a workbench brief with
+            exports and provenance.
+          </p>
+        </header>
 
-      <div className="flex-1 flex flex-row overflow-hidden">
-        {/* Sidebar */}
-        <div className="w-80 border-r border-line p-4 overflow-y-auto space-y-6">
-          <div>
-            <h2 className="text-lg font-semibold text-ink mb-4">Parameters</h2>
-            <div className="space-y-4">
+        <div className="grid gap-5 lg:grid-cols-[340px_minmax(0,1fr)]">
+          <section className="card h-fit p-4">
+            <h2 className="flex items-center gap-2 text-sm font-semibold text-ink">
+              <SlidersHorizontal className="h-4 w-4 text-brand-300" aria-hidden="true" />
+              Parameters
+            </h2>
+
+            <div className="mt-3 space-y-3">
               <div>
-                <label className="block text-sm font-medium text-ink-muted mb-2">Layer</label>
+                <label className="label" htmlFor="detect-layer">
+                  Layer
+                </label>
                 <select
-                  value={params.layer}
-                  onChange={(e) => setParams({ ...params, layer: e.target.value })}
+                  id="detect-layer"
                   className="input"
+                  value={params.layer}
+                  onChange={(event) =>
+                    setParams({ ...params, layer: event.target.value as (typeof TEMPORAL_LAYERS)[number] })
+                  }
                 >
-                  {['landsat_annual', 'sentinel2_annual', 'planet_nicfi_annual', 'night_lights_annual', 'urban_extents_annual', 'water_annual', 'glacier_annual', 'coastline_annual', 'cropland_annual', 'sea_ice_annual'].map((l) => (
-                    <option key={l} value={l}>{l.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}</option>
+                  {TEMPORAL_LAYERS.map((layer) => (
+                    <option key={layer} value={layer}>
+                      {titleCase(layer)}
+                    </option>
                   ))}
                 </select>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-sm font-medium text-ink-muted mb-2">Start Date</label>
-                  <input type="date" value={params.startDate} onChange={(e) => setParams({ ...params, startDate: e.target.value })} className="input" />
+                  <label className="label" htmlFor="detect-start">
+                    Start
+                  </label>
+                  <input
+                    id="detect-start"
+                    type="date"
+                    className="input"
+                    value={params.startDate}
+                    onChange={(event) => setParams({ ...params, startDate: event.target.value })}
+                  />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-ink-muted mb-2">End Date</label>
-                  <input type="date" value={params.endDate} onChange={(e) => setParams({ ...params, endDate: e.target.value })} className="input" />
+                  <label className="label" htmlFor="detect-end">
+                    End
+                  </label>
+                  <input
+                    id="detect-end"
+                    type="date"
+                    className="input"
+                    value={params.endDate}
+                    onChange={(event) => setParams({ ...params, endDate: event.target.value })}
+                  />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-ink-muted mb-2">Algorithm</label>
-                <select value={params.algorithm} onChange={(e) => setParams({ ...params, algorithm: e.target.value })} className="input">
-                  {['ccdc', 'radd', 'bfast', 'landtrendr', 'tscd', 'sma'].map((a) => (
-                    <option key={a} value={a}>{a.toUpperCase()}</option>
+                <label className="label" htmlFor="detect-algorithm">
+                  Algorithm
+                </label>
+                <select
+                  id="detect-algorithm"
+                  className="input"
+                  value={params.algorithm}
+                  onChange={(event) =>
+                    setParams({
+                      ...params,
+                      algorithm: event.target.value as (typeof CHANGE_DETECTION_ALGORITHMS)[number]
+                    })
+                  }
+                >
+                  {CHANGE_DETECTION_ALGORITHMS.map((algorithm) => (
+                    <option key={algorithm} value={algorithm}>
+                      {algorithm.toUpperCase()}
+                    </option>
                   ))}
                 </select>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-ink-muted mb-2">Change Types</label>
-                <div className="grid grid-cols-2 gap-2">
-                  {['deforestation', 'urban_expansion', 'water_change', 'glacier_change', 'coastline_change', 'cropland_change', 'mining_expansion', 'coastal_erosion', 'glacier_mass_balance', 'night_light_delta', 'fire', 'flood', 'landslide', 'volcanic', 'oil_spill'].map((ct) => (
-                    <label key={ct} className="flex items-center gap-2 cursor-pointer">
-                      <input type="checkbox" checked={false} onChange={() => {}} className="w-4 h-4 rounded border-line text-brand-300 focus:ring-brand-500" />
-                      <span className="text-sm text-ink-muted capitalize">{ct.replace(/_/g, ' ')}</span>
+              <fieldset>
+                <legend className="label">Change types</legend>
+                <div className="grid grid-cols-2 gap-x-2 gap-y-1.5">
+                  {CHANGE_TYPES.map((type) => (
+                    <label key={type} className="flex cursor-pointer items-center gap-2 text-sm text-ink-muted">
+                      <input
+                        type="checkbox"
+                        className="h-3.5 w-3.5 rounded border-line accent-brand-500"
+                        checked={params.changeTypes.includes(type)}
+                        onChange={() => toggleType(type)}
+                      />
+                      <span className="truncate">{CHANGE_TYPE_METADATA[type].label}</span>
                     </label>
                   ))}
                 </div>
-              </div>
+                <p className="mt-1.5 text-xs text-ink-faint">None selected means every change type.</p>
+              </fieldset>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-sm font-medium text-ink-muted mb-2">Confidence Threshold: 0.6</label>
-                  <input type="range" min={0} max={1} step={0.05} value={0.6} className="w-full h-2 bg-surface-raised rounded-full appearance-none accent-brand-600" />
+                  <label className="label" htmlFor="detect-confidence">
+                    Confidence ≥ {params.confidenceThreshold.toFixed(2)}
+                  </label>
+                  <input
+                    id="detect-confidence"
+                    type="range"
+                    min={0}
+                    max={0.95}
+                    step={0.05}
+                    value={params.confidenceThreshold}
+                    onChange={(event) =>
+                      setParams({ ...params, confidenceThreshold: Number(event.target.value) })
+                    }
+                    className="w-full accent-brand-500"
+                  />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-ink-muted mb-2">Min Area (ha): 0.1</label>
-                  <input type="range" min={0.01} max={100} step={0.01} value={0.1} className="w-full h-2 bg-surface-raised rounded-full appearance-none accent-brand-600" />
+                  <label className="label" htmlFor="detect-min-area">
+                    Min area (ha)
+                  </label>
+                  <input
+                    id="detect-min-area"
+                    type="number"
+                    min={0.01}
+                    step={0.01}
+                    className="input"
+                    value={params.minAreaHa}
+                    onChange={(event) =>
+                      setParams({ ...params, minAreaHa: Math.max(0.01, Number(event.target.value) || 0.01) })
+                    }
+                  />
                 </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-ink-muted mb-2">Output Format</label>
-                <select className="input">
-                  <option value="geojson">GeoJSON</option>
-                  <option value="cog">Cloud Optimized GeoTIFF</option>
-                  <option value="netcdf">NetCDF</option>
-                  <option value="zarr">Zarr</option>
-                  <option value="csv">CSV</option>
-                </select>
               </div>
 
               <button
-                onClick={() => { /* handleSubmit() */ }}
-                disabled={false}
-                className="w-full btn btn-primary flex items-center justify-center gap-2"
+                type="button"
+                onClick={handleSubmit}
+                disabled={running}
+                className="btn btn-primary w-full justify-center"
               >
-                <Zap className="w-4 h-4" />
-                Run Detection
+                {running ? (
+                  <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                ) : (
+                  <Play className="h-4 w-4" aria-hidden="true" />
+                )}
+                Run detection
+              </button>
+
+              <button type="button" onClick={saveAndRun} disabled={saving} className="btn btn-ghost w-full justify-center">
+                {saving ? (
+                  <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                ) : (
+                  <Save className="h-4 w-4" aria-hidden="true" />
+                )}
+                Save project &amp; run brief
               </button>
             </div>
-          </div>
+          </section>
 
-          {/* Results Panel */}
-          <div className="flex-1 overflow-y-auto p-4">
-            <div className="bg-surface/60 rounded-xl p-6">
-              <h2 className="text-xl font-bold text-ink mb-4">Change Detection Results</h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                <div className="bg-surface-raised p-4 rounded-lg">
-                  <p className="text-ink-faint text-sm">Total Changes</p>
-                  <p className="font-bold text-3xl text-brand-300">—</p>
+          <section className="min-w-0 space-y-5">
+            {!results ? (
+              <div className="card flex min-h-[360px] flex-col items-center justify-center p-8 text-center">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-500/10 text-brand-300">
+                  <Sparkles className="h-6 w-6" aria-hidden="true" />
                 </div>
-                <div className="bg-surface-raised p-4 rounded-lg">
-                  <p className="text-ink-faint text-sm">Total Area (ha)</p>
-                  <p className="font-bold text-3xl text-brand-300">—</p>
-                </div>
-                <div className="bg-surface-raised p-4 rounded-lg">
-                  <p className="text-ink-faint text-sm">Processing Time</p>
-                  <p className="font-bold text-3xl text-brand-300">—</p>
-                </div>
+                <h2 className="mt-4 text-lg font-semibold text-ink">Configure a window, then run</h2>
+                <p className="mt-2 max-w-md text-sm text-ink-muted">
+                  Results appear here with polygons, areas, confidence, and centroids. Save the configuration to keep
+                  it, or run it as a stored brief from the workbench.
+                </p>
               </div>
-              <p className="text-center text-ink-faint">Configure parameters and run detection to see results</p>
-            </div>
-          </div>
+            ) : (
+              <>
+                <div className="card p-5">
+                  <div className="flex flex-wrap items-start justify-between gap-2">
+                    <div>
+                      <h2 className="text-lg font-semibold text-ink">Detection result</h2>
+                      <p className="mt-1 text-xs text-ink-faint">
+                        {titleCase(results.layer)} · {results.startDate} → {results.endDate} ·{' '}
+                        {results.algorithm.toUpperCase()} · {results.metadata.tilesProcessed} tiles ·{' '}
+                        {results.metadata.processingTimeMs} ms
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      <button type="button" className="btn btn-ghost" onClick={() => downloadGeoJson(results)}>
+                        <Download className="h-4 w-4" aria-hidden="true" />
+                        GeoJSON
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-ghost"
+                        onClick={() => {
+                          setParams({
+                            layer: results.layer,
+                            startDate: results.startDate,
+                            endDate: results.endDate,
+                            algorithm: results.algorithm,
+                            changeTypes: [],
+                            confidenceThreshold: results.metadata.confidenceThreshold,
+                            minAreaHa: results.metadata.minAreaHa
+                          });
+                        }}
+                      >
+                        Reuse parameters
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                    <div className="rounded-xl border border-line bg-surface-sunken/60 p-4">
+                      <p className="text-xs text-ink-faint">Changes</p>
+                      <p className="mt-1 text-2xl font-semibold tabular-nums text-brand-200">
+                        {results.summary.totalChanges}
+                      </p>
+                    </div>
+                    <div className="rounded-xl border border-line bg-surface-sunken/60 p-4">
+                      <p className="text-xs text-ink-faint">Total area</p>
+                      <p className="mt-1 text-2xl font-semibold tabular-nums text-brand-200">
+                        {results.summary.totalAreaHa.toLocaleString()} ha
+                      </p>
+                    </div>
+                    <div className="rounded-xl border border-line bg-surface-sunken/60 p-4">
+                      <p className="text-xs text-ink-faint">High confidence</p>
+                      <p className="mt-1 text-2xl font-semibold tabular-nums text-brand-200">
+                        {results.summary.byConfidence.high ?? 0}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="card overflow-hidden">
+                  <div className="border-b border-line px-5 py-3">
+                    <h3 className="text-sm font-semibold text-ink">Detected polygons</h3>
+                  </div>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="border-b border-line text-left text-xs uppercase tracking-wide text-ink-faint">
+                          <th className="px-4 py-2 font-medium">Change type</th>
+                          <th className="px-4 py-2 text-right font-medium">Area</th>
+                          <th className="px-4 py-2 text-right font-medium">Confidence</th>
+                          <th className="px-4 py-2 text-right font-medium">Vertices</th>
+                          <th className="px-4 py-2 text-right font-medium">Detected</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {results.changes.map((change) => (
+                          <tr key={change.id} className="border-b border-line/60">
+                            <td className="px-4 py-2 text-ink">{CHANGE_TYPE_METADATA[change.type].label}</td>
+                            <td className="px-4 py-2 text-right tabular-nums text-ink">
+                              {change.areaHa.toLocaleString()} ha
+                            </td>
+                            <td className="px-4 py-2 text-right tabular-nums text-ink">
+                              {(change.confidence * 100).toFixed(0)}%
+                            </td>
+                            <td className="px-4 py-2 text-right tabular-nums text-ink-muted">
+                              {change.geometry.coordinates[0]?.length ?? 0}
+                            </td>
+                            <td className="px-4 py-2 text-right tabular-nums text-ink-muted">
+                              {change.detectedAt.slice(0, 10)}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </>
+            )}
+          </section>
         </div>
       </div>
     </div>

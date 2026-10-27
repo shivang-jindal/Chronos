@@ -6,8 +6,12 @@ import { rateLimit } from 'express-rate-limit';
 
 import type { AppConfig } from './config.js';
 import type { Logger } from './logger.js';
+import type { ChangeBriefResult, ProjectConfig } from '@chronos/shared';
 import { apiRouter } from './http/routes.js';
+import { createWorkspaceRouter } from './http/workspaceRoutes.js';
 import { createRequestLogger, errorHandler, notFoundHandler } from './http/middleware.js';
+import { chronosProvider, SourceRegistry } from './providers/sources.js';
+import { WorkspaceStore } from './store/workspaceStore.js';
 
 export interface AppDependencies {
   config: AppConfig;
@@ -20,6 +24,9 @@ export interface AppDependencies {
  */
 export function createApp({ config, logger }: AppDependencies): Express {
   const app = express();
+
+  const store = new WorkspaceStore<ProjectConfig, ChangeBriefResult>(config.DATA_FILE);
+  const registry = new SourceRegistry(chronosProvider, config.SOURCE_MODE);
 
   app.disable('x-powered-by');
   app.use(helmet());
@@ -48,6 +55,7 @@ export function createApp({ config, logger }: AppDependencies): Express {
     res.json({ status: 'ok', uptimeSeconds: Math.round(process.uptime()), timestamp: new Date().toISOString() });
   });
 
+  app.use('/api', createWorkspaceRouter({ store, registry }));
   app.use('/api', apiRouter);
   app.use(notFoundHandler);
   app.use(errorHandler(logger));

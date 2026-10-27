@@ -65,6 +65,28 @@ internals for tiled raster / ML inference services without changing contracts.
 
 ---
 
+### Workbench: saved work and real deliverables
+
+The workbench is the product's centre of gravity, not a demo panel:
+
+- **Projects** — a named area, window, detector, confidence threshold, and minimum area, stored server-side in `server/.data/workspace.json`.
+- **Stored runs** — every execution keeps its result, duration, source mode, and optional note, so the brief survives a reload and can be compared later.
+- **Exports** — CSV, JSON, a self-contained printable HTML brief, and a `gods-eye/1` envelope for the other four league apps.
+- **Provenance** — each brief records the provider, whether it was `live`, `embedded`, or `cache`, and the exact generation time.
+- **Live or embedded data** — `SOURCE_MODE=live` queries NASA EONET open events with a 5 s timeout and 10-minute TTL; the committed embedded snapshot keeps clones, CI, and offline machines deterministic.
+- **Interop** — a native Chronos envelope round-trips exactly; an envelope from a sibling app is narrowed to the area-of-interest hint it carries.
+
+```bash
+# Optional: query the live NASA EONET feed instead of the embedded snapshot.
+SOURCE_MODE=live npm run dev
+```
+
+The JSON store is intentional: it needs no service, no native module, and no
+migration step, while the route layer only depends on the store's method
+surface, so a Postgres implementation can drop in later.
+
+---
+
 ## Quick start
 
 Prerequisites: **Node 20.11+**, **npm 10+**.
@@ -115,6 +137,19 @@ All endpoints are under `/api/v1` and validate input with Zod.
 | `POST` | `/api/v1/share-links` | Encode a shareable view |
 | `GET` | `/api/v1/share-links/:token` | Decode a shareable view |
 | `POST` | `/api/v1/ai/chat` | Assistant reply + globe actions |
+| `GET` | `/api/v1/workspace` | Projects, runs, and source status |
+| `GET` | `/api/v1/sources` | Data provider status |
+| `POST` | `/api/v1/sources/refresh` | Refresh the live provider (or re-affirm the snapshot) |
+| `GET` | `/api/v1/projects` | List saved projects |
+| `POST` | `/api/v1/projects` | Save a named project |
+| `GET/PATCH/DELETE` | `/api/v1/projects/:id` | Read, rename, reconfigure, or delete |
+| `POST` | `/api/v1/projects/:id/runs` | Run the project into a stored brief |
+| `GET` | `/api/v1/projects/:id/runs` | Run history |
+| `GET` | `/api/v1/runs/:id` | One stored run |
+| `GET` | `/api/v1/projects/:id/export?format=csv\|json` | Download the latest brief |
+| `GET` | `/api/v1/projects/:id/brief` | Printable HTML brief |
+| `GET` | `/api/v1/projects/:id/envelope` | Portable `gods-eye/1` envelope |
+| `POST` | `/api/v1/league/import` | Import an envelope from any league app |
 
 Validation failures return `400` with a machine-readable `issues` array.
 Unknown routes return a structured `404`. Unexpected failures never leak
@@ -134,6 +169,9 @@ Chronos/
 ├── server/
 │   └── src/
 │       ├── domain/engine.ts  # deterministic analysis + assistant
+│   ├── domain/workbench.ts # stored change brief
+│   ├── providers/          # live feed + embedded snapshot
+│   ├── store/              # atomic JSON persistence
 │       ├── http/             # routes and middleware
 │       └── app.ts            # testable Express factory
 ├── shared/                 # Zod schemas, constants, derived types
@@ -147,8 +185,8 @@ the real middleware stack without binding a port.
 
 ## Testing
 
-29 tests cover the deterministic engine, validation, error handling, and every
-public endpoint:
+40 tests cover the deterministic engine, validation, error handling, workspace
+persistence, exports, league envelopes, and every public endpoint:
 
 ```bash
 npm test

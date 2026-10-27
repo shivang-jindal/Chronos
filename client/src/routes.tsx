@@ -1,6 +1,7 @@
 import { Outlet, RouteObject, Navigate, useRoutes } from 'react-router-dom';
 import { AppShell } from './components/AppShell';
 import { GlobePage } from './pages/GlobePage';
+import { WorkbenchPage } from './pages/WorkbenchPage';
 import { ChangeDetectionPage } from './pages/ChangeDetectionPage';
 import { ForecastingPage } from './pages/ForecastingPage';
 import { ScenarioBuilderPage } from './pages/ScenarioBuilderPage';
@@ -14,7 +15,8 @@ export const routes: RouteObject[] = [
     path: '/',
     element: <AppShell />,
     children: [
-      { index: true, element: <Navigate to="/globe" replace /> },
+      { index: true, element: <Navigate to="/workbench" replace /> },
+      { path: 'workbench', element: <WorkbenchPage /> },
       { path: 'globe', element: <GlobePage /> },
       { path: 'change-detection', element: <ChangeDetectionPage /> },
       { path: 'forecasting', element: <ForecastingPage /> },

@@ -1,6 +1,6 @@
 # Chronos
 
-> **The 4D Temporal Earth Engine — scrub 40 years of planetary change, then forecast what comes next.**
+> **Earth observation workbench for discovering satellite scenes and organizing reproducible change briefs.**
 
 [![CI](https://github.com/shivang-jindal/Chronos/actions/workflows/ci.yml/badge.svg)](https://github.com/shivang-jindal/Chronos/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -30,6 +30,12 @@ endpoint cacheable, auditable, and testable; production deployments swap the
 internals for tiled raster / ML inference services without changing contracts.
 
 ---
+
+## Current implementation and limits
+
+The implemented live-data workflow searches Microsoft Planetary Computer's STAC API for Landsat Collection 2 Level-2 and Sentinel-2 Level-2A scene metadata by bounding box and date. It returns a bounded metadata page that can be exported as JSON. It does not retrieve raster pixels, create imagery previews, run validated change detection, or forecast environmental outcomes. The globe layers, change detection, forecasting, and scenario outputs elsewhere in this repository are deterministic illustrative models. The older Data Explorer collection catalogue also contains illustrative catalogue entries and should not be treated as live inventory.
+
+Some sections below describe the original product vision and aspirational capabilities. They are not a claim that those functions are implemented. See [SPEC.md](SPEC.md) for the vision and this section for present behavior.
 
 ## Features
 

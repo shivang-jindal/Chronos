@@ -7,6 +7,7 @@ import { ForecastingPage } from './pages/ForecastingPage';
 import { ScenarioBuilderPage } from './pages/ScenarioBuilderPage';
 import { AIChatPage } from './pages/AIChatPage';
 import { DataExplorerPage } from './pages/DataExplorerPage';
+import { SceneSearchPage } from './pages/SceneSearchPage';
 import { SettingsPage } from './pages/SettingsPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 
@@ -23,6 +24,7 @@ export const routes: RouteObject[] = [
       { path: 'scenario-builder', element: <ScenarioBuilderPage /> },
       { path: 'ai-chat', element: <AIChatPage /> },
       { path: 'data-explorer', element: <DataExplorerPage /> },
+      { path: 'scenes', element: <SceneSearchPage /> },
       { path: 'settings', element: <SettingsPage /> },
       { path: '*', element: <NotFoundPage /> }
     ]

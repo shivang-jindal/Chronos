@@ -1,5 +1,7 @@
 # 🕰️ CHRONOS — The 4D Temporal Earth Engine
 
+> **Implementation status:** This file preserves the original aspirational product vision, not a description of shipped functionality. The current live integration is bounded scene metadata search for `landsat-c2-l2` and `sentinel-2-l2a` through [Microsoft Planetary Computer STAC](https://planetarycomputer.microsoft.com/docs/reference/stac/). It does not fetch imagery pixels, run scientific change detection, or forecast. Other modeled outputs are illustrative.
+
 > **A time-travel engine for Earth. Scrub through 40+ years of planetary change. See forests vanish, cities explode, glaciers retreat, coastlines rewrite themselves. Then ask the AI what comes next.**
 
 ---

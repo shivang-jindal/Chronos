@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Outlet, useLocation, NavLink, useNavigate } from 'react-router-dom';
-import { Menu, X, Globe, Layers, Zap, Brain, Search, Settings, HelpCircle, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Play, Pause, SkipBack, SkipForward, RotateCcw, Download, Share2, Mic, Maximize, Minimize, History, Briefcase, Zap as ZapIcon, Globe as GlobeIcon, Brain as BrainIcon, Layers as LayersIcon2, Settings as SettingsIcon } from 'lucide-react';
+import { Menu, X, Globe, Layers, Zap, Brain, Search, Settings, HelpCircle, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Play, Pause, SkipBack, SkipForward, RotateCcw, Download, Share2, Mic, Maximize, Minimize, History, Briefcase, Zap as ZapIcon, Globe as GlobeIcon, Brain as BrainIcon, Layers as LayersIcon2, Settings as SettingsIcon, Satellite } from 'lucide-react';
 import { useToast } from './Toast';
 import { useChronosStore } from '../store/chronosStore';
 import { TemporalControl } from './TemporalControl';
@@ -22,6 +22,7 @@ const NAV_ITEMS = [
   { to: '/scenario-builder', label: 'Scenario Builder', icon: BrainIcon },
   { to: '/ai-chat', label: 'AI Oracle', icon: BrainIcon },
   { to: '/data-explorer', label: 'Data Explorer', icon: LayersIcon2 },
+  { to: '/scenes', label: 'Scene Search', icon: Satellite },
   { to: '/settings', label: 'Settings', icon: SettingsIcon }
 ];
 

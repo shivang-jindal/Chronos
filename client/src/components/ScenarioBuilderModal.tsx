@@ -22,36 +22,36 @@ export function ScenarioBuilderModal({ isOpen, onClose }: { isOpen: boolean; onC
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-      <div className="bg-white dark:bg-slate-950 rounded-xl shadow-xl max-w-lg w-full mx-4 max-h-[90vh] overflow-y-auto">
-        <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 backdrop-blur-sm">
+      <div className="bg-surface rounded-xl shadow-[var(--shadow-pop)] max-w-lg w-full mx-4 max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between p-4 border-b border-line">
           <div className="flex items-center gap-2">
-            <Zap className="w-5 h-5 text-brand-600 dark:text-brand-400" />
-            <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Scenario Builder</h2>
+            <Zap className="w-5 h-5 text-brand-300" />
+            <h2 className="text-lg font-semibold text-ink">Scenario Builder</h2>
           </div>
-          <button onClick={onClose} className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800" aria-label="Close">
+          <button onClick={onClose} className="p-2 rounded-lg hover:bg-white/5" aria-label="Close">
             <X className="w-5 h-5" />
           </button>
         </div>
 
         <div className="p-4 space-y-4">
           <div>
-            <label htmlFor="scenario-name" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Scenario name</label>
+            <label htmlFor="scenario-name" className="block text-sm font-medium text-ink-muted mb-1">Scenario name</label>
             <input
               id="scenario-name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-3 py-2 text-sm bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+              className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
             />
           </div>
 
           <div>
-            <label htmlFor="scenario-type" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Scenario type</label>
+            <label htmlFor="scenario-type" className="block text-sm font-medium text-ink-muted mb-1">Scenario type</label>
             <select
               id="scenario-type"
               value={scenarioType}
               onChange={(e) => setScenarioType(e.target.value)}
-              className="w-full px-3 py-2 text-sm bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+              className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
             >
               {SCENARIO_TYPES.map((type) => (
                 <option key={type} value={type}>{type}</option>
@@ -60,12 +60,12 @@ export function ScenarioBuilderModal({ isOpen, onClose }: { isOpen: boolean; onC
           </div>
 
           <div>
-            <label htmlFor="scenario-forcing" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Climate forcing</label>
+            <label htmlFor="scenario-forcing" className="block text-sm font-medium text-ink-muted mb-1">Climate forcing</label>
             <select
               id="scenario-forcing"
               value={forcing}
               onChange={(e) => setForcing(e.target.value)}
-              className="w-full px-3 py-2 text-sm bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+              className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
             >
               {SCENARIO_FORCINGS.map((f) => (
                 <option key={f} value={f}>{f}</option>
@@ -74,7 +74,7 @@ export function ScenarioBuilderModal({ isOpen, onClose }: { isOpen: boolean; onC
           </div>
 
           <fieldset>
-            <legend className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Policy levers</legend>
+            <legend className="block text-sm font-medium text-ink-muted mb-2">Policy levers</legend>
             <div className="flex flex-wrap gap-2">
               {POLICY_LEVERS.map((lever) => {
                 const active = levers.includes(lever);
@@ -86,8 +86,8 @@ export function ScenarioBuilderModal({ isOpen, onClose }: { isOpen: boolean; onC
                     aria-pressed={active}
                     className={`px-3 py-1.5 text-xs rounded-full border transition-colors ${
                       active
-                        ? 'bg-brand-600 text-white border-brand-600'
-                        : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700'
+                        ? 'bg-brand-500 text-[#04121d] border-brand-500'
+                        : 'bg-surface-raised text-ink-muted border-line'
                     }`}
                   >
                     {lever.replace(/_/g, ' ')}
@@ -98,11 +98,11 @@ export function ScenarioBuilderModal({ isOpen, onClose }: { isOpen: boolean; onC
           </fieldset>
         </div>
 
-        <div className="flex justify-end gap-2 p-4 border-t border-slate-200 dark:border-slate-700">
-          <button onClick={onClose} className="px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
+        <div className="flex justify-end gap-2 p-4 border-t border-line">
+          <button onClick={onClose} className="px-4 py-2 text-sm font-medium text-ink-muted hover:bg-white/5 rounded-lg transition-colors">
             Cancel
           </button>
-          <button onClick={handleCreate} className="px-4 py-2 text-sm font-medium text-white bg-brand-600 hover:bg-brand-700 rounded-lg transition-colors">
+          <button onClick={handleCreate} className="px-4 py-2 text-sm font-medium text-[#04121d] bg-brand-500 hover:bg-brand-400 rounded-lg transition-colors">
             Create Scenario
           </button>
         </div>

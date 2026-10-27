@@ -56,24 +56,24 @@ export function ForecastingModal({ isOpen, onClose }: ForecastingModalProps) {
   }, [addToast]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-      <div className="bg-white dark:bg-slate-950 rounded-xl shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto flex flex-col">
-        <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700">
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Forecasting</h2>
-          <button onClick={onClose} className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 backdrop-blur-sm">
+      <div className="bg-surface rounded-xl shadow-[var(--shadow-pop)] max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto flex flex-col">
+        <div className="flex items-center justify-between p-4 border-b border-line">
+          <h2 className="text-lg font-semibold text-ink">Forecasting</h2>
+          <button onClick={onClose} className="p-2 rounded-lg hover:bg-white/5">
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        <div className="flex border-b border-slate-200 dark:border-slate-700">
+        <div className="flex border-b border-line">
           {['setup', 'results'].map((t) => (
             <button
               key={t}
               onClick={() => setActiveTab(t as 'setup' | 'results')}
               className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
                 activeTab === t
-                  ? 'border-brand-600 text-brand-600 dark:text-brand-400'
-                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'
+                  ? 'border-brand-500 text-brand-300'
+                  : 'text-ink-faint hover:text-ink'
               }`}
             >
               {t.charAt(0).toUpperCase() + t.slice(1)}
@@ -85,11 +85,11 @@ export function ForecastingModal({ isOpen, onClose }: ForecastingModalProps) {
           {activeTab === 'setup' && (
             <div className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Layer</label>
+                <label className="block text-sm font-medium text-ink-muted mb-2">Layer</label>
                 <select
                   value={params.layer}
                   onChange={(e) => setParams({ ...params, layer: e.target.value })}
-                  className="w-full px-3 py-2 text-sm bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                  className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
                 >
                   {TEMPORAL_LAYERS.map((l) => (
                     <option key={l} value={l}>{l.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}</option>
@@ -99,11 +99,11 @@ export function ForecastingModal({ isOpen, onClose }: ForecastingModalProps) {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Location</label>
+                  <label className="block text-sm font-medium text-ink-muted mb-2">Location</label>
                   <select
                     value={params.location.type}
                     onChange={(e) => setParams({ ...params, location: { ...params.location, type: e.target.value } })}
-                    className="w-full px-3 py-2 text-sm bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                    className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
                   >
                     <option value="point">Point</option>
                     <option value="bbox">Bounding Box</option>
@@ -111,7 +111,7 @@ export function ForecastingModal({ isOpen, onClose }: ForecastingModalProps) {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Coordinates</label>
+                  <label className="block text-sm font-medium text-ink-muted mb-2">Coordinates</label>
                   <div className="grid grid-cols-2 gap-2">
                     <input
                       type="number"
@@ -119,7 +119,7 @@ export function ForecastingModal({ isOpen, onClose }: ForecastingModalProps) {
                       placeholder="Longitude"
                       value={params.location.coordinates?.[0] || ''}
                       onChange={(e) => setParams({ ...params, location: { ...params.location, coordinates: [parseFloat(e.target.value), params.location.coordinates?.[1] || 0] } })}
-                      className="px-3 py-2 text-sm bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                      className="px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
                     />
                     <input
                       type="number"
@@ -127,7 +127,7 @@ export function ForecastingModal({ isOpen, onClose }: ForecastingModalProps) {
                       placeholder="Latitude"
                       value={params.location.coordinates?.[1] || ''}
                       onChange={(e) => setParams({ ...params, location: { ...params.location, coordinates: [params.location.coordinates?.[0] || 0, parseFloat(e.target.value)] } })}
-                      className="px-3 py-2 text-sm bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                      className="px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
                     />
                   </div>
                 </div>
@@ -135,22 +135,22 @@ export function ForecastingModal({ isOpen, onClose }: ForecastingModalProps) {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Horizon (years)</label>
+                  <label className="block text-sm font-medium text-ink-muted mb-2">Horizon (years)</label>
                   <input
                     type="number"
                     min="1"
                     max="50"
                     value={params.horizonYears}
                     onChange={(e) => setParams({ ...params, horizonYears: parseInt(e.target.value) })}
-                    className="w-full px-3 py-2 text-sm bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                    className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Model</label>
+                  <label className="block text-sm font-medium text-ink-muted mb-2">Model</label>
                   <select
                     value={params.model}
                     onChange={(e) => setParams({ ...params, model: e.target.value })}
-                    className="w-full px-3 py-2 text-sm bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                    className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
                   >
                     {FORECASTING_MODELS.map((m) => (
                       <option key={m} value={m}>{m.charAt(0).toUpperCase() + m.slice(1)}</option>
@@ -161,11 +161,11 @@ export function ForecastingModal({ isOpen, onClose }: ForecastingModalProps) {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Scenario</label>
+                  <label className="block text-sm font-medium text-ink-muted mb-2">Scenario</label>
                   <select
                     value={params.scenario}
                     onChange={(e) => setParams({ ...params, scenario: e.target.value })}
-                    className="w-full px-3 py-2 text-sm bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                    className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
                   >
                     {SCENARIO_FORCINGS.map((s) => (
                       <option key={s} value={s}>{s.toUpperCase()}</option>
@@ -173,7 +173,7 @@ export function ForecastingModal({ isOpen, onClose }: ForecastingModalProps) {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Confidence Level</label>
+                  <label className="block text-sm font-medium text-ink-muted mb-2">Confidence Level</label>
                   <input
                     type="number"
                     step="0.01"
@@ -181,29 +181,29 @@ export function ForecastingModal({ isOpen, onClose }: ForecastingModalProps) {
                     max="0.99"
                     value={params.confidenceLevel}
                     onChange={(e) => setParams({ ...params, confidenceLevel: parseFloat(e.target.value) })}
-                    className="w-full px-3 py-2 text-sm bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                    className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Ensemble Size</label>
+                  <label className="block text-sm font-medium text-ink-muted mb-2">Ensemble Size</label>
                   <input
                     type="number"
                     min="10"
                     max="1000"
                     value={params.ensembleSize}
                     onChange={(e) => setParams({ ...params, ensembleSize: parseInt(e.target.value) })}
-                    className="w-full px-3 py-2 text-sm bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                    className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Output Format</label>
+                  <label className="block text-sm font-medium text-ink-muted mb-2">Output Format</label>
                   <select
                     value={params.outputFormat}
                     onChange={(e) => setParams({ ...params, outputFormat: e.target.value })}
-                    className="w-full px-3 py-2 text-sm bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                    className="w-full px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
                   >
                     {EXPORT_FORMATS.map((f) => (
                       <option key={f} value={f}>{f.toUpperCase()}</option>
@@ -216,51 +216,51 @@ export function ForecastingModal({ isOpen, onClose }: ForecastingModalProps) {
 
           {activeTab === 'results' && results && (
             <div className="space-y-6">
-              <div className="p-4 bg-slate-50 dark:bg-slate-800 rounded-lg">
-                <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">Forecast Results</h3>
+              <div className="p-4 bg-surface-sunken bg-surface-raised rounded-lg">
+                <h3 className="text-lg font-semibold text-ink mb-2">Forecast Results</h3>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <p className="text-slate-500 dark:text-slate-400">Model</p>
+                    <p className="text-ink-faint">Model</p>
                     <p className="font-medium">{results.model || params.model}</p>
                   </div>
                   <div>
-                    <p className="text-slate-500 dark:text-slate-400">Scenario</p>
+                    <p className="text-ink-faint">Scenario</p>
                     <p className="font-medium">{results.scenario || params.scenario}</p>
                   </div>
                   <div>
-                    <p className="text-slate-500 dark:text-slate-400">Horizon</p>
+                    <p className="text-ink-faint">Horizon</p>
                     <p className="font-medium">{params.horizonYears} years</p>
                   </div>
                   <div>
-                    <p className="text-slate-500 dark:text-slate-400">Confidence</p>
+                    <p className="text-ink-faint">Confidence</p>
                     <p className="font-medium">{(params.confidenceLevel * 100).toFixed(0)}%</p>
                   </div>
                   <div>
-                    <p className="text-slate-500 dark:text-slate-400">Ensemble Size</p>
+                    <p className="text-ink-faint">Ensemble Size</p>
                     <p className="font-medium">{params.ensembleSize}</p>
                   </div>
                   <div>
-                    <p className="text-slate-500 dark:text-slate-400">Output Format</p>
+                    <p className="text-ink-faint">Output Format</p>
                     <p className="font-medium">{params.outputFormat.toUpperCase()}</p>
                   </div>
                 </div>
               </div>
               <div className="space-y-4">
-                <h4 className="text-md font-semibold text-slate-900 dark:text-white">Yearly Predictions</h4>
+                <h4 className="text-md font-semibold text-ink">Yearly Predictions</h4>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-slate-200 dark:border-slate-700">
-                        <th className="text-left p-2 text-slate-500 dark:text-slate-400">Year</th>
-                        <th className="text-left p-2 text-slate-500 dark:text-slate-400">Value</th>
-                        <th className="text-left p-2 text-slate-500 dark:text-slate-400">Lower Bound</th>
-                        <th className="text-left p-2 text-slate-500 dark:text-slate-400">Upper Bound</th>
-                        <th className="text-left p-2 text-slate-500 dark:text-slate-400">Confidence</th>
+                      <tr className="border-b border-line">
+                        <th className="text-left p-2 text-ink-faint">Year</th>
+                        <th className="text-left p-2 text-ink-faint">Value</th>
+                        <th className="text-left p-2 text-ink-faint">Lower Bound</th>
+                        <th className="text-left p-2 text-ink-faint">Upper Bound</th>
+                        <th className="text-left p-2 text-ink-faint">Confidence</th>
                       </tr>
                     </thead>
                     <tbody>
                       {results.predictions?.map((p: any, i: number) => (
-                        <tr key={i} className="border-b border-slate-200 dark:border-slate-700">
+                        <tr key={i} className="border-b border-line">
                           <td className="p-2">{p.year}</td>
                           <td className="p-2">{p.value.toFixed(2)}</td>
                           <td className="p-2">{p.lowerBound?.toFixed(2) ?? 'N/A'}</td>

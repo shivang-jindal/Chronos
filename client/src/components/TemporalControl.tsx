@@ -105,7 +105,7 @@ export function TemporalControl() {
           max={2050}
           value={temporal.currentYear}
           onChange={handleYearChange}
-          className="w-20 px-2 py-1.5 text-sm font-mono text-center bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+          className="w-20 px-2 py-1.5 text-sm font-mono text-center bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
           aria-label="Current year"
         />
 
@@ -113,7 +113,7 @@ export function TemporalControl() {
         <select
           value={temporal.resolution}
           onChange={(e) => handleResolutionChange(e.target.value as 'year' | 'quarter' | 'month' | 'week' | 'day')}
-          className="px-2 py-1.5 text-sm bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+          className="px-2 py-1.5 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
           aria-label="Temporal resolution"
         >
           {TEMPORAL_RESOLUTIONS.map((res) => (
@@ -123,7 +123,7 @@ export function TemporalControl() {
       </div>
 
       {/* Time Range Controls */}
-      <div className="flex items-center gap-1 ml-4 border-l border-slate-200 dark:border-slate-700 pl-4">
+      <div className="flex items-center gap-1 ml-4 border-l border-line pl-4">
         <label htmlFor="start-year" className="sr-only">Start Year</label>
         <input
           ref={startYearRef}
@@ -133,10 +133,10 @@ export function TemporalControl() {
           max={2050}
           value={temporal.startYear}
           onChange={handleStartYearChange}
-          className="w-16 px-2 py-1.5 text-sm font-mono text-center bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+          className="w-16 px-2 py-1.5 text-sm font-mono text-center bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
           aria-label="Start year"
         />
-        <span className="text-slate-500 dark:text-slate-400">–</span>
+        <span className="text-ink-faint">–</span>
         <label htmlFor="end-year" className="sr-only">End Year</label>
         <input
           ref={endYearRef}
@@ -146,17 +146,17 @@ export function TemporalControl() {
           max={2050}
           value={temporal.endYear}
           onChange={handleEndYearChange}
-          className="w-16 px-2 py-1.5 text-sm font-mono text-center bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+          className="w-16 px-2 py-1.5 text-sm font-mono text-center bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
           aria-label="End year"
         />
       </div>
 
       {/* Visualization Style Selector */}
-      <div className="ml-4 border-l border-slate-200 dark:border-slate-700 pl-4">
+      <div className="ml-4 border-l border-line pl-4">
         <select
           value={visualizationStyle}
           onChange={(e) => setVisualizationStyle(e.target.value)}
-          className="px-2 py-1.5 text-sm bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+          className="px-2 py-1.5 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
           aria-label="Visualization style"
         >
           {VISUALIZATION_STYLES.map((style) => (
@@ -168,17 +168,17 @@ export function TemporalControl() {
       </div>
 
       {/* Playback Controls */}
-      <div className="flex items-center gap-1 ml-4 border-l border-slate-200 dark:border-slate-700 pl-4">
+      <div className="flex items-center gap-1 ml-4 border-l border-line pl-4">
         <button
           onClick={() => { /* setDirection('backward'); temporal.setPlaying(true); */ }}
-          className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+          className="p-2 rounded-lg hover:bg-white/5 transition-colors"
           aria-label="Play backward"
         >
           <Rewind className="w-5 h-5" />
         </button>
         <button
           onClick={() => { /* temporal.setPlaying(!playing); */ }}
-          className={`p-2 rounded-lg transition-colors ${/* playing ? 'bg-brand-100 text-brand-700 dark:bg-brand-900/30 dark:text-brand-300' : */ ''}`}
+          className={`p-2 rounded-lg transition-colors ${/* playing ? 'bg-brand-500/15 text-brand-200' : */ ''}`}
           aria-label={/* playing ? 'Pause' : */ 'Play'}
         >
           {/* playing ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" /> */}
@@ -186,7 +186,7 @@ export function TemporalControl() {
         </button>
         <button
           onClick={() => { /* setDirection('forward'); temporal.setPlaying(true); */ }}
-          className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+          className="p-2 rounded-lg hover:bg-white/5 transition-colors"
           aria-label="Play forward"
         >
           <FastForward className="w-5 h-5" />
@@ -194,12 +194,12 @@ export function TemporalControl() {
       </div>
 
       {/* Speed Control */}
-      <div className="flex items-center gap-1 ml-4 border-l border-slate-200 dark:border-slate-700 pl-4">
+      <div className="flex items-center gap-1 ml-4 border-l border-line pl-4">
         <label htmlFor="speed" className="sr-only">Animation Speed</label>
         <select
           value={1}
           onChange={(e) => { /* setAnimationSpeed(Number(e.target.value)); */ }}
-          className="px-2 py-1.5 text-sm bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+          className="px-2 py-1.5 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
           aria-label="Animation speed"
         >
           {[0.25, 0.5, 1, 2, 5, 10].map((speed) => (
@@ -209,21 +209,21 @@ export function TemporalControl() {
       </div>
 
       {/* Comparison Mode */}
-      <div className="flex items-center gap-2 ml-4 border-l border-slate-200 dark:border-slate-700 pl-4">
+      <div className="flex items-center gap-2 ml-4 border-l border-line pl-4">
         <label className="flex items-center gap-2 cursor-pointer">
           <input
             type="checkbox"
             checked={false}
             onChange={() => { /* setComparisonMode(!comparisonMode); */ }}
-            className="w-4 h-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500"
+            className="w-4 h-4 rounded border-line text-brand-300 focus:ring-brand-500"
           />
-          <span className="text-sm text-slate-600 dark:text-slate-400">Compare</span>
+          <span className="text-sm text-ink-muted">Compare</span>
         </label>
       </div>
 
       {/* Voice Control */}
       <button
-        className="ml-4 p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+        className="ml-4 p-2 rounded-lg hover:bg-white/5 transition-colors"
         aria-label="Voice control"
       >
         <Mic className="w-5 h-5" />

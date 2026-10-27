@@ -69,26 +69,26 @@ export function AppShell() {
   const isActive = (path: string) => location.pathname === path || location.pathname.startsWith(path + '/');
 
   return (
-    <div className="flex min-h-screen bg-slate-50 dark:bg-slate-950">
-      <a href="#main" className="skip-link sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-50 px-4 py-2 bg-brand-600 text-white rounded-lg">
+    <div className="flex min-h-screen bg-surface-sunken">
+      <a href="#main" className="skip-link sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-50 px-4 py-2 bg-brand-500 text-[#04121d] rounded-lg">
         Skip to main content
       </a>
 
       {/* Desktop Sidebar */}
-      <aside className={`hidden w-64 shrink-0 flex-col border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 lg:flex transition-all duration-300 ${!sidebarOpen ? 'w-16' : ''}`}>
+      <aside className={`hidden w-64 shrink-0 flex-col border-r border-line bg-surface lg:flex transition-all duration-300 ${!sidebarOpen ? 'w-16' : ''}`}>
         {/* Brand */}
-        <div className={`flex items-center justify-between h-16 px-4 border-b border-slate-200 dark:border-slate-800 ${!sidebarOpen ? 'justify-center' : ''}`}>
+        <div className={`flex items-center justify-between h-16 px-4 border-b border-line ${!sidebarOpen ? 'justify-center' : ''}`}>
           {sidebarOpen && (
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center">
-                <GlobeIcon className="w-5 h-5 text-white" />
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center">
+                <GlobeIcon className="w-5 h-5 text-[#04121d]" />
               </div>
-              <span className="font-bold text-lg text-slate-900 dark:text-white">Chronos</span>
+              <span className="font-bold text-lg text-ink">Chronos</span>
             </div>
           )}
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="p-2 rounded-lg hover:bg-white/5 transition-colors"
             aria-label={sidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'}
           >
             {sidebarOpen ? <ChevronLeft className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
@@ -107,8 +107,8 @@ export function AppShell() {
                 className={({ isActive }) =>
                   `flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200 ${
                     isActive
-                      ? 'bg-brand-50 text-brand-700 dark:bg-brand-900/30 dark:text-brand-300'
-                      : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white'
+                      ? 'bg-brand-500/10 text-brand-200'
+                      : 'text-ink-muted hover:bg-white/5 hover:text-ink'
                   } group`
               }
             >
@@ -120,15 +120,15 @@ export function AppShell() {
         </nav>
 
         {/* Footer */}
-        <div className={`border-t border-slate-200 dark:border-slate-800 p-4 ${!sidebarOpen ? 'hidden' : ''}`}>
-          <div className="text-xs text-slate-500 dark:text-slate-400 text-center">
+        <div className={`border-t border-line p-4 ${!sidebarOpen ? 'hidden' : ''}`}>
+          <div className="text-xs text-ink-faint text-center">
             Chronos v1.0.0 — 4D Temporal Earth Engine
           </div>
         </div>
       </aside>
 
       {/* Mobile Bottom Nav */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur">
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 border-t border-line bg-surface-sunken/80 backdrop-blur">
         <div className="flex justify-around py-2">
           {NAV_ITEMS.slice(0, 5).map((item) => {
             const isActive = location.pathname === item.to || location.pathname.startsWith(item.to + '/');
@@ -138,7 +138,7 @@ export function AppShell() {
                 to={item.to}
                 end={item.to === '/globe'}
                 className={`flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition-colors ${
-                  isActive ? 'text-brand-600 dark:text-brand-400' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300'
+                  isActive ? 'text-brand-300' : 'text-ink-faint hover:text-ink-muted text-ink-faint hover:text-ink'
                 }`}
               >
                 <item.icon className="w-6 h-6" />
@@ -152,10 +152,10 @@ export function AppShell() {
       {/* Main Content */}
       <div className="flex min-w-0 flex-1 flex-col">
         {/* Top Bar */}
-        <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur px-4 py-2.5">
+        <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-line bg-surface-sunken/80 backdrop-blur px-4 py-2.5">
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="lg:hidden p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+            className="lg:hidden p-2 rounded-lg hover:bg-white/5"
             aria-label="Toggle menu"
           >
             <Menu className="w-6 h-6" />
@@ -173,8 +173,8 @@ export function AppShell() {
               onClick={handleVoiceToggle}
               className={`p-2 rounded-lg transition-all ${
                 voiceActive
-                  ? 'bg-brand-100 text-brand-700 dark:bg-brand-900/30 dark:text-brand-300 ring-2 ring-brand-500'
-                  : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'
+                  ? 'bg-brand-500/15 text-brand-200 ring-2 ring-brand-500'
+                  : 'text-ink-faint hover:bg-white/5'
               }`}
               aria-label={voiceActive ? 'Deactivate voice control' : 'Activate voice control'}
               aria-pressed={voiceActive}
@@ -189,7 +189,7 @@ export function AppShell() {
             {/* Layer Panel Toggle */}
             <button
               onClick={() => openModal('layers')}
-              className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+              className="p-2 rounded-lg hover:bg-white/5"
               aria-label="Layers"
             >
               <LayersIcon2 className="w-5 h-5" />
@@ -198,7 +198,7 @@ export function AppShell() {
             {/* AI Chat Toggle */}
             <button
               onClick={() => openModal('ai-chat')}
-              className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+              className="p-2 rounded-lg hover:bg-white/5"
               aria-label="AI Assistant"
             >
               <BrainIcon className="w-5 h-5" />
@@ -207,7 +207,7 @@ export function AppShell() {
             {/* Scenario Builder */}
             <button
               onClick={() => openModal('scenario-builder')}
-              className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+              className="p-2 rounded-lg hover:bg-white/5"
               aria-label="Scenario Builder"
             >
               <ZapIcon className="w-5 h-5" />
@@ -216,7 +216,7 @@ export function AppShell() {
             {/* Share */}
             <button
               onClick={() => openModal('share')}
-              className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+              className="p-2 rounded-lg hover:bg-white/5"
               aria-label="Share"
             >
               <Share2 className="w-5 h-5" />
@@ -225,7 +225,7 @@ export function AppShell() {
             {/* Export */}
             <button
               onClick={() => openModal('export')}
-              className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+              className="p-2 rounded-lg hover:bg-white/5"
               aria-label="Export"
             >
               <Download className="w-5 h-5" />
@@ -234,7 +234,7 @@ export function AppShell() {
             {/* Settings */}
             <button
               onClick={() => openModal('settings')}
-              className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+              className="p-2 rounded-lg hover:bg-white/5"
               aria-label="Settings"
             >
               <Settings className="w-5 h-5" />
@@ -243,7 +243,7 @@ export function AppShell() {
             {/* Help */}
             <button
               onClick={() => openModal('help')}
-              className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+              className="p-2 rounded-lg hover:bg-white/5"
               aria-label="Help"
             >
               <HelpCircle className="w-5 h-5" />

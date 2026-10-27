@@ -124,26 +124,26 @@ export function AIChatPanel({ isOpen, onClose }: { isOpen: boolean; onClose: () 
   };
 
   return (
-    <div className={`fixed right-0 top-16 bottom-0 w-96 bg-white dark:bg-slate-950 border-l border-slate-200 dark:border-slate-800 z-40 flex flex-col transition-transform duration-300 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+    <div className={`fixed right-0 top-16 bottom-0 w-96 bg-surface border-l border-line z-40 flex flex-col transition-transform duration-300 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700">
+      <div className="flex items-center justify-between p-4 border-b border-line">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center">
-            <Sparkles className="w-5 h-5 text-white" />
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center">
+            <Sparkles className="w-5 h-5 text-[#04121d]" />
           </div>
-          <span className="font-semibold text-slate-900 dark:text-white">Chronos AI</span>
+          <span className="font-semibold text-ink">Chronos AI</span>
         </div>
         <div className="flex items-center gap-1">
           <button
             onClick={() => setVoiceActive(!voiceActive)}
-            className={`p-2 rounded-lg transition-colors ${voiceActive ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
+            className={`p-2 rounded-lg transition-colors ${voiceActive ? 'bg-brand-500/10 text-brand-200' : 'text-ink-faint hover:bg-white/5'}`}
             aria-label={voiceActive ? 'Deactivate voice' : 'Activate voice'}
           >
             {voiceListening ? <Mic className="w-5 h-5 animate-pulse text-red-500" /> : <MicIcon className="w-5 h-5" />}
           </button>
           <button
             onClick={onClose}
-            className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+            className="p-2 rounded-lg hover:bg-white/5"
             aria-label="Close chat"
           >
             <X className="w-5 h-5" />
@@ -154,7 +154,7 @@ export function AIChatPanel({ isOpen, onClose }: { isOpen: boolean; onClose: () 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4" ref={messagesEndRef}>
         {messages.length === 0 && (
-          <div className="text-center py-12 text-slate-500 dark:text-slate-400">
+          <div className="text-center py-12 text-ink-faint">
             <MessageSquare className="w-12 h-12 mx-auto mb-4 opacity-50" />
             <p className="text-lg font-medium">Welcome to Chronos AI</p>
             <p className="text-sm mt-2 opacity-70">Ask me anything about Earth's changes over time</p>
@@ -168,7 +168,7 @@ export function AIChatPanel({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                 <button
                   key={i}
                   onClick={() => setInput(suggestion)}
-                  className="px-3 py-1.5 text-xs bg-slate-100 dark:bg-slate-800 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                  className="px-3 py-1.5 text-xs bg-surface-raised rounded-full hover:bg-white/10 transition-colors"
                 >
                   {suggestion}
                 </button>
@@ -182,17 +182,17 @@ export function AIChatPanel({ isOpen, onClose }: { isOpen: boolean; onClose: () 
             <div className={`flex flex-col max-w-[80%] ${message.role === 'user' ? 'items-end' : 'items-start'}`}>
               <div className={`flex items-end gap-2 ${message.role === 'user' ? 'flex-row-reverse' : ''}`}>
                 <div className={`relative max-w-[80%] ${message.role === 'user' ? 'text-right' : ''}`}>
-                  <div className={`px-4 py-2 rounded-2xl ${message.role === 'user' ? 'bg-brand-600 text-white rounded-tr-none' : 'bg-slate-100 dark:bg-slate-800 rounded-tr-none dark:rounded-tr-none'}`}>
+                  <div className={`px-4 py-2 rounded-2xl ${message.role === 'user' ? 'bg-brand-500 text-[#04121d] rounded-tr-none' : 'bg-surface-raised rounded-tr-none'}`}>
                     <p className="text-sm whitespace-pre-wrap">{message.content}</p>
                   </div>
                   <div className="flex items-center gap-1 mt-1 opacity-60">
-                    <span className="text-xs text-slate-500 dark:text-slate-400">
+                    <span className="text-xs text-ink-faint">
                       {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </span>
                     {message.actions && message.actions.length > 0 && (
                       <button
                         onClick={() => message.actions?.forEach(handleActionClick)}
-                        className="text-xs text-brand-600 dark:text-brand-400 hover:underline"
+                        className="text-xs text-brand-300 hover:underline"
                       >
                         Execute {message.actions.length} action{message.actions.length > 1 ? 's' : ''}
                       </button>
@@ -200,21 +200,21 @@ export function AIChatPanel({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                     <div className="flex items-center gap-1">
                       <button
                         onClick={() => handleFeedback(message.id, true)}
-                        className="p-1 rounded hover:bg-slate-200 dark:hover:bg-slate-700"
+                        className="p-1 rounded hover:bg-white/10"
                         aria-label="Helpful"
                       >
                         <ThumbsUp className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => handleFeedback(message.id, false)}
-                        className="p-1 rounded hover:bg-slate-200 dark:hover:bg-slate-700"
+                        className="p-1 rounded hover:bg-white/10"
                         aria-label="Not helpful"
                       >
                         <ThumbsDown className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => handleCopy(message.content)}
-                        className="p-1 rounded hover:bg-slate-200 dark:hover:bg-slate-700"
+                        className="p-1 rounded hover:bg-white/10"
                         aria-label="Copy"
                       >
                         <CopyIcon className="w-4 h-4" />
@@ -230,7 +230,7 @@ export function AIChatPanel({ isOpen, onClose }: { isOpen: boolean; onClose: () 
       </div>
 
       {/* Input */}
-      <div className="p-4 border-t border-slate-200 dark:border-slate-700">
+      <div className="p-4 border-t border-line">
         <div className="flex items-end gap-2">
           <textarea
             ref={inputRef}
@@ -239,13 +239,13 @@ export function AIChatPanel({ isOpen, onClose }: { isOpen: boolean; onClose: () 
             onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } }}
             placeholder="Ask about Earth's changes..."
             rows={1}
-            className="flex-1 px-4 py-2.5 text-sm bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 resize-none min-h-[44px] max-h-32"
+            className="flex-1 px-4 py-2.5 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 resize-none min-h-[44px] max-h-32"
             disabled={sending}
           />
           <div className="flex items-center gap-1">
             <button
               onClick={() => setVoiceActive(!voiceActive)}
-              className={`p-2.5 rounded-lg transition-colors ${voiceActive ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
+              className={`p-2.5 rounded-lg transition-colors ${voiceActive ? 'bg-brand-500/10 text-brand-200' : 'text-ink-faint hover:bg-white/5'}`}
               aria-label={voiceActive ? 'Stop voice input' : 'Start voice input'}
               disabled={sending}
             >
@@ -254,7 +254,7 @@ export function AIChatPanel({ isOpen, onClose }: { isOpen: boolean; onClose: () 
             <button
               onClick={handleSend}
               disabled={!input.trim() || sending}
-              className="p-2.5 rounded-lg bg-brand-600 text-white hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="p-2.5 rounded-lg bg-brand-500 text-[#04121d] hover:bg-brand-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               aria-label="Send message"
             >
               {sending ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}

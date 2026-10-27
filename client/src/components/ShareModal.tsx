@@ -67,26 +67,26 @@ export function ShareModal({ isOpen, onClose }: ShareModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-      <div className="bg-white dark:bg-slate-950 rounded-xl shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-        <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700">
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Share Chronos View</h2>
-          <button onClick={onClose} className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 backdrop-blur-sm">
+      <div className="bg-surface rounded-xl shadow-[var(--shadow-pop)] max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between p-4 border-b border-line">
+          <h2 className="text-lg font-semibold text-ink">Share Chronos View</h2>
+          <button onClick={onClose} className="p-2 rounded-lg hover:bg-white/5">
             <X className="w-5 h-5" />
           </button>
         </div>
 
         <div className="p-4 space-y-6">
           {/* Tabs */}
-          <div className="flex border-b border-slate-200 dark:border-slate-700">
+          <div className="flex border-b border-line">
             {['link', 'embed', 'scene'].map((t) => (
               <button
                 key={t}
                 onClick={() => setTab(t as 'link' | 'embed' | 'scene')}
                 className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
                   tab === t
-                    ? 'border-brand-600 text-brand-600 dark:text-brand-400'
-                    : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'
+                    ? 'border-brand-500 text-brand-300'
+                    : 'text-ink-faint hover:text-ink'
                 }`}
               >
                 {t.charAt(0).toUpperCase() + t.slice(1)}
@@ -97,40 +97,40 @@ export function ShareModal({ isOpen, onClose }: ShareModalProps) {
           {/* Link Tab */}
           {tab === 'link' && (
             <div className="space-y-4">
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Share Link</label>
+              <label className="block text-sm font-medium text-ink-muted mb-2">Share Link</label>
               <div className="flex gap-2">
                 <input
                   type="text"
                   value={fullUrl}
                   readOnly
-                  className="flex-1 px-3 py-2 text-sm bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+                  className="flex-1 px-3 py-2 text-sm bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
                 />
                 <button
                   onClick={handleCopy}
-                  className="px-4 py-2 text-sm font-medium text-white bg-brand-600 hover:bg-brand-700 rounded-lg flex items-center gap-2"
+                  className="px-4 py-2 text-sm font-medium text-[#04121d] bg-brand-500 hover:bg-brand-400 rounded-lg flex items-center gap-2"
                 >
                   <Copy className="w-4 h-4" />
                   Copy
                 </button>
               </div>
-              {copied && <p className="text-sm text-green-600 dark:text-green-400">Copied to clipboard!</p>}
+              {copied && <p className="text-sm text-emerald-400">Copied to clipboard!</p>}
             </div>
           )}
 
           {/* Embed Tab */}
           {tab === 'embed' && (
             <div className="space-y-4">
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Embed Code</label>
+              <label className="block text-sm font-medium text-ink-muted mb-2">Embed Code</label>
               <div className="relative">
                 <textarea
                   readOnly
                   value={`<iframe src="${fullUrl}" width="100%" height="500" frameborder="0" allowfullscreen></iframe>`}
                   rows={4}
-                  className="w-full px-3 py-2 text-sm font-mono bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 resize-none"
+                  className="w-full px-3 py-2 text-sm font-mono bg-surface-raised border border-line rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 resize-none"
                 />
                 <button
                   onClick={handleEmbedCopy}
-                  className="absolute right-2 top-2 px-3 py-1 text-xs font-medium text-white bg-brand-600 hover:bg-brand-700 rounded transition-colors"
+                  className="absolute right-2 top-2 px-3 py-1 text-xs font-medium text-[#04121d] bg-brand-500 hover:bg-brand-400 rounded transition-colors"
                 >
                   Copy
                 </button>
@@ -141,20 +141,20 @@ export function ShareModal({ isOpen, onClose }: ShareModalProps) {
           {/* Scene Tab */}
           {tab === 'scene' && (
             <div className="space-y-4">
-              <p className="text-sm text-slate-600 dark:text-slate-400">
+              <p className="text-sm text-ink-muted">
                 Share a complete scene with camera position, time, layers, and annotations.
               </p>
-              <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
+              <div className="bg-surface/60 rounded-lg p-4">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Scene Data</span>
+                  <span className="text-sm font-medium text-ink-muted">Scene Data</span>
                   <button
                     onClick={() => navigator.clipboard.writeText(JSON.stringify(sceneData, null, 2))}
-                    className="px-3 py-1 text-xs font-medium text-brand-600 dark:text-brand-400 hover:bg-brand-100 dark:hover:bg-brand-900/30 rounded transition-colors"
+                    className="px-3 py-1 text-xs font-medium text-brand-300 hover:bg-brand-500/15 rounded transition-colors"
                   >
                     <Copy className="w-3 h-3 mr-1" /> Copy JSON
                   </button>
                 </div>
-                <pre className="bg-slate-900 text-green-300 p-3 rounded text-xs overflow-auto max-h-48">
+                <pre className="bg-surface-raised text-green-300 p-3 rounded text-xs overflow-auto max-h-48">
                   {JSON.stringify(sceneData, null, 2)}
                 </pre>
               </div>
@@ -162,8 +162,8 @@ export function ShareModal({ isOpen, onClose }: ShareModalProps) {
           )}
         </div>
 
-        <div className="flex items-center justify-end gap-3 p-4 border-t border-slate-200 dark:border-slate-700">
-          <button onClick={onClose} className="px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
+        <div className="flex items-center justify-end gap-3 p-4 border-t border-line">
+          <button onClick={onClose} className="px-4 py-2 text-sm font-medium text-ink-muted hover:bg-white/5 rounded-lg transition-colors">
             Close
           </button>
         </div>

@@ -68,24 +68,24 @@ export function HelpModal({ isOpen, onClose }: HelpModalProps) {
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-      <div className="bg-white dark:bg-slate-950 rounded-xl shadow-xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto flex flex-col">
-        <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700">
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Help & Documentation</h2>
-          <button onClick={onClose} className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 backdrop-blur-sm">
+      <div className="bg-surface rounded-xl shadow-[var(--shadow-pop)] max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto flex flex-col">
+        <div className="flex items-center justify-between p-4 border-b border-line">
+          <h2 className="text-lg font-semibold text-ink">Help & Documentation</h2>
+          <button onClick={onClose} className="p-2 rounded-lg hover:bg-white/5">
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        <div className="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+        <div className="flex border-b border-line overflow-x-auto">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors flex items-center gap-2 whitespace-nowrap ${
                 activeTab === tab.id
-                  ? 'border-brand-600 text-brand-600 dark:text-brand-400'
-                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'
+                  ? 'border-brand-500 text-brand-300'
+                  : 'text-ink-faint hover:text-ink'
               }`}
             >
               <tab.icon className="w-4 h-4" />
@@ -98,8 +98,8 @@ export function HelpModal({ isOpen, onClose }: HelpModalProps) {
           {activeTab === 'getting-started' && (
             <div className="space-y-6">
               <div>
-                <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4">Welcome to Chronos</h3>
-                <p className="text-slate-600 dark:text-slate-400 mb-6">
+                <h3 className="text-xl font-bold text-ink mb-4">Welcome to Chronos</h3>
+                <p className="text-ink-muted mb-6">
                   Chronos is a 4D temporal Earth engine that lets you explore 40+ years of planetary change on a photorealistic 3D globe.
                   Travel through time from 1984 to 2050, detect changes, forecast futures, and build scenarios.
                 </p>
@@ -112,16 +112,16 @@ export function HelpModal({ isOpen, onClose }: HelpModalProps) {
                     { title: '5. Forecast the Future', desc: 'Use the Forecasting panel to predict future changes with AI models.' },
                     { title: '6. Build Scenarios', desc: 'Create what-if scenarios with policy levers and climate models.' }
                   ].map((item, i) => (
-                    <div key={i} className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4 border-l-4 border-brand-500">
-                      <h4 className="font-semibold text-slate-900 dark:text-white mb-1">{item.title}</h4>
-                      <p className="text-slate-600 dark:text-slate-400 text-sm">{item.desc}</p>
+                    <div key={i} className="bg-surface-sunken bg-surface/60 rounded-lg p-4 border-l-4 border-brand-500">
+                      <h4 className="font-semibold text-ink mb-1">{item.title}</h4>
+                      <p className="text-ink-muted text-sm">{item.desc}</p>
                     </div>
                   ))}
                 </div>
               </div>
 
               <div>
-                <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Key Controls</h3>
+                <h3 className="text-lg font-semibold text-ink mb-4">Key Controls</h3>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                   {[
                     ['1-7', 'Visualization styles'],
@@ -142,9 +142,9 @@ export function HelpModal({ isOpen, onClose }: HelpModalProps) {
                     ['E', 'Export'],
                     ['?', 'Help']
                   ].map(([keys, action]) => (
-                    <div key={action} className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-3">
-                      <kbd className="px-2 py-0.5 bg-slate-200 dark:bg-slate-700 rounded text-xs font-mono">{keys}</kbd>
-                      <span className="text-sm text-slate-600 dark:text-slate-400 ml-2">{action}</span>
+                    <div key={action} className="bg-surface-sunken bg-surface/60 rounded-lg p-3">
+                      <kbd className="px-2 py-0.5 bg-surface-raised rounded text-xs font-mono">{keys}</kbd>
+                      <span className="text-sm text-ink-muted ml-2">{action}</span>
                     </div>
                   ))}
                 </div>
@@ -154,7 +154,7 @@ export function HelpModal({ isOpen, onClose }: HelpModalProps) {
 
           {activeTab === 'keyboard-shortcuts' && (
             <div>
-              <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Keyboard Shortcuts</h3>
+              <h3 className="text-lg font-semibold text-ink mb-4">Keyboard Shortcuts</h3>
               <div className="space-y-2">
                 {[
                   { category: 'Navigation', shortcuts: [
@@ -186,13 +186,13 @@ export function HelpModal({ isOpen, onClose }: HelpModalProps) {
                     { keys: 'R', action: 'Reset to present' }
                   ]}
                 ].map((cat) => (
-                  <div key={cat.category} className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
-                    <h4 className="font-semibold text-slate-900 dark:text-white mb-3">{cat.category}</h4>
+                  <div key={cat.category} className="bg-surface-sunken bg-surface/60 rounded-lg p-4">
+                    <h4 className="font-semibold text-ink mb-3">{cat.category}</h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                       {cat.shortcuts.map((s, i) => (
-                        <div key={i} className="flex items-center gap-3 p-2 bg-slate-50 dark:bg-slate-800/50 rounded">
-                          <kbd className="px-2 py-0.5 bg-slate-200 dark:bg-slate-700 rounded text-xs font-mono">{s.keys}</kbd>
-                          <span className="text-sm text-slate-600 dark:text-slate-400">{s.action}</span>
+                        <div key={i} className="flex items-center gap-3 p-2 bg-surface-sunken bg-surface/60 rounded">
+                          <kbd className="px-2 py-0.5 bg-surface-raised rounded text-xs font-mono">{s.keys}</kbd>
+                          <span className="text-sm text-ink-muted">{s.action}</span>
                         </div>
                       ))}
                     </div>
@@ -204,15 +204,15 @@ export function HelpModal({ isOpen, onClose }: HelpModalProps) {
 
           {activeTab === 'faq' && (
             <div>
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4">Frequently Asked Questions</h3>
+              <h3 className="text-xl font-bold text-ink mb-4">Frequently Asked Questions</h3>
               <div className="space-y-4">
                 {faqs.map((faq, i) => (
-                  <details key={i} className="group bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700">
+                  <details key={i} className="group bg-surface-sunken bg-surface/60 rounded-lg border border-line">
                     <summary className="p-4 cursor-pointer list-none flex items-center justify-between">
-                      <span className="font-medium text-slate-900 dark:text-white">{faq.q}</span>
-                      <ChevronDown className="w-5 h-5 text-slate-400 group-open:rotate-180 transition-transform" />
+                      <span className="font-medium text-ink">{faq.q}</span>
+                      <ChevronDown className="w-5 h-5 text-ink-faint group-open:rotate-180 transition-transform" />
                     </summary>
-                    <div className="px-4 pb-4 text-slate-600 dark:text-slate-400">
+                    <div className="px-4 pb-4 text-ink-muted">
                       {faq.a}
                     </div>
                   </details>
@@ -221,21 +221,21 @@ export function HelpModal({ isOpen, onClose }: HelpModalProps) {
             </div>
           )}
 
-          <div className="pt-4 border-t border-slate-200 dark:border-slate-700">
+          <div className="pt-4 border-t border-line">
             <div className="flex flex-wrap gap-2">
-              <a href="https://github.com/shivang-jindal/Chronos" target="_blank" className="px-4 py-2 text-sm font-medium text-brand-600 dark:text-brand-400 hover:bg-brand-50 dark:hover:bg-brand-900/20 rounded-lg transition-colors flex items-center gap-2">
+              <a href="https://github.com/shivang-jindal/Chronos" target="_blank" className="px-4 py-2 text-sm font-medium text-brand-300 hover:bg-brand-500/10 rounded-lg transition-colors flex items-center gap-2">
                 <Github className="w-4 h-4" />
                 GitHub Repository
               </a>
-              <a href="https://github.com/shivang-jindal/Chronos/issues" target="_blank" className="px-4 py-2 text-sm font-medium text-brand-600 dark:text-brand-400 hover:bg-brand-50 dark:hover:bg-brand-900/20 rounded-lg transition-colors flex items-center gap-2">
+              <a href="https://github.com/shivang-jindal/Chronos/issues" target="_blank" className="px-4 py-2 text-sm font-medium text-brand-300 hover:bg-brand-500/10 rounded-lg transition-colors flex items-center gap-2">
                 <AlertCircle className="w-4 h-4" />
                 Report Issue
               </a>
-              <a href="https://github.com/shivang-jindal/Chronos/discussions" target="_blank" className="px-4 py-2 text-sm font-medium text-brand-600 dark:text-brand-400 hover:bg-brand-50 dark:hover:bg-brand-900/20 rounded-lg transition-colors flex items-center gap-2">
+              <a href="https://github.com/shivang-jindal/Chronos/discussions" target="_blank" className="px-4 py-2 text-sm font-medium text-brand-300 hover:bg-brand-500/10 rounded-lg transition-colors flex items-center gap-2">
                 <MessageSquare className="w-4 h-4" />
                 Discussions
               </a>
-              <a href="https://discord.gg/chronos-earth" target="_blank" className="px-4 py-2 text-sm font-medium text-brand-600 dark:text-brand-400 hover:bg-brand-50 dark:hover:bg-brand-900/20 rounded-lg transition-colors flex items-center gap-2">
+              <a href="https://discord.gg/chronos-earth" target="_blank" className="px-4 py-2 text-sm font-medium text-brand-300 hover:bg-brand-500/10 rounded-lg transition-colors flex items-center gap-2">
                 <MessageSquare className="w-4 h-4" />
                 Discord
               </a>

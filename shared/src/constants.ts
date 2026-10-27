@@ -708,4 +708,6 @@ export const SOCIAL_LINKS = {
 
 export const VERSION = '1.0.0';
 export const BUILD_DATE = new Date().toISOString();
-export const GIT_COMMIT = process.env.GIT_COMMIT || 'unknown';
+// Guarded so the module also evaluates in the browser, where `process` is absent.
+export const GIT_COMMIT =
+  (typeof process !== 'undefined' && process.env?.GIT_COMMIT) || 'unknown';

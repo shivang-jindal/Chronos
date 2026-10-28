@@ -2,11 +2,14 @@
  * The Chronos workbench job: turn a saved change-detection configuration into
  * a brief an analyst can hand on.
  *
- * The detection itself is the deterministic engine already used by the
- * `/change-detection` endpoint. What the brief adds is the part that makes the
- * output usable: areas by change type, a confidence split, the largest events
- * with their centroids, and a check against the live natural-event feed for
- * anything currently burning or flooding inside the same area of interest.
+ * The figures come from the deterministic illustrative model behind
+ * `/change-detection`: the same configuration always produces the same
+ * polygons, but nothing here reads satellite pixels or validates change
+ * against imagery. What the brief adds is the part that makes the output
+ * usable as an artifact: areas by change type, a confidence split, the largest
+ * events with their centroids, and a cross-check against the natural-event
+ * feed for anything currently burning or flooding inside the same area of
+ * interest. That feed is context, not a detection source.
  */
 
 import {
@@ -88,7 +91,7 @@ export function buildChangeBrief(
   const confidenceTotal = low + medium + high;
 
   const headline = [
-    `${result.summary.totalChanges} change${result.summary.totalChanges === 1 ? '' : 's'} across ${formatHa(result.summary.totalAreaHa)}`,
+    `Modeled scenario: ${result.summary.totalChanges} change${result.summary.totalChanges === 1 ? '' : 's'} across ${formatHa(result.summary.totalAreaHa)}`,
     leadType ? `led by ${leadType.type.replace(/_/g, ' ')}` : '',
     `${confidenceTotal > 0 ? Math.round((high / confidenceTotal) * 100) : 0}% high confidence`
   ]
@@ -97,7 +100,7 @@ export function buildChangeBrief(
 
   const overlapNote =
     overlapping.length > 0
-      ? ` ${overlapping.length} open natural event${overlapping.length === 1 ? '' : 's'} ${overlapping.length === 1 ? 'overlaps' : 'overlap'} the area of interest.`
+      ? ` Natural-event cross-check: ${overlapping.length} open event${overlapping.length === 1 ? '' : 's'} ${overlapping.length === 1 ? 'overlaps' : 'overlap'} the area of interest.`
       : '';
 
   const output = changeBriefResultSchema.parse({

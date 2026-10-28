@@ -22,6 +22,10 @@ function titleCase(value: string): string {
 function downloadGeoJson(result: ChangeDetectionResult): void {
   const collection = {
     type: 'FeatureCollection',
+    properties: {
+      basis: 'illustrative-deterministic-model',
+      note: 'Generated from saved parameters; no satellite pixels were read and no change was validated.'
+    },
     features: result.changes.map((change) => ({
       type: 'Feature',
       id: change.id,
@@ -87,13 +91,13 @@ export function ChangeDetectionPage() {
       setResults(data);
       addToast({
         type: 'success',
-        title: 'Analysis complete',
-        message: `${data.summary.totalChanges} changes across ${data.summary.totalAreaHa.toLocaleString()} ha`
+        title: 'Model run complete',
+        message: `${data.summary.totalChanges} modeled changes across ${data.summary.totalAreaHa.toLocaleString()} ha`
       });
     } catch (error) {
       addToast({
         type: 'error',
-        title: 'Detection failed',
+        title: 'Model run failed',
         message: error instanceof Error ? error.message : 'Unexpected error'
       });
     } finally {
@@ -133,8 +137,13 @@ export function ChangeDetectionPage() {
         <header className="mb-5">
           <h1 className="text-2xl font-bold text-ink">Change detection</h1>
           <p className="mt-1 max-w-3xl text-sm text-ink-muted">
-            Run a detector over a saved window, inspect the polygons, and keep the result as a workbench brief with
-            exports and provenance.
+            Run the illustrative model over a saved window, inspect the polygons, and keep the result as a workbench
+            brief with exports and provenance.
+          </p>
+          <p className="mt-2 max-w-3xl rounded-xl border border-line bg-surface/60 px-4 py-2.5 text-xs text-ink-muted">
+            These polygons are generated deterministically from your parameters. No satellite pixels are read and
+            nothing is validated against imagery, so treat the result as a reproducible scenario rather than measured
+            change. For real satellite metadata, use <span className="text-ink">Scenes</span>.
           </p>
         </header>
 
@@ -281,7 +290,7 @@ export function ChangeDetectionPage() {
                 ) : (
                   <Play className="h-4 w-4" aria-hidden="true" />
                 )}
-                Run detection
+                Run model
               </button>
 
               <button type="button" onClick={saveAndRun} disabled={saving} className="btn btn-ghost w-full justify-center">
@@ -303,8 +312,8 @@ export function ChangeDetectionPage() {
                 </div>
                 <h2 className="mt-4 text-lg font-semibold text-ink">Configure a window, then run</h2>
                 <p className="mt-2 max-w-md text-sm text-ink-muted">
-                  Results appear here with polygons, areas, confidence, and centroids. Save the configuration to keep
-                  it, or run it as a stored brief from the workbench.
+                  Results appear here with modeled polygons, areas, confidence, and centroids. Save the configuration
+                  to keep it, or run it as a stored brief from the workbench.
                 </p>
               </div>
             ) : (
@@ -312,7 +321,7 @@ export function ChangeDetectionPage() {
                 <div className="card p-5">
                   <div className="flex flex-wrap items-start justify-between gap-2">
                     <div>
-                      <h2 className="text-lg font-semibold text-ink">Detection result</h2>
+                      <h2 className="text-lg font-semibold text-ink">Illustrative model result</h2>
                       <p className="mt-1 text-xs text-ink-faint">
                         {titleCase(results.layer)} · {results.startDate} → {results.endDate} ·{' '}
                         {results.algorithm.toUpperCase()} · {results.metadata.tilesProcessed} tiles ·{' '}
@@ -368,7 +377,7 @@ export function ChangeDetectionPage() {
 
                 <div className="card overflow-hidden">
                   <div className="border-b border-line px-5 py-3">
-                    <h3 className="text-sm font-semibold text-ink">Detected polygons</h3>
+                    <h3 className="text-sm font-semibold text-ink">Modeled polygons</h3>
                   </div>
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm">
@@ -378,7 +387,7 @@ export function ChangeDetectionPage() {
                           <th className="px-4 py-2 text-right font-medium">Area</th>
                           <th className="px-4 py-2 text-right font-medium">Confidence</th>
                           <th className="px-4 py-2 text-right font-medium">Vertices</th>
-                          <th className="px-4 py-2 text-right font-medium">Detected</th>
+                          <th className="px-4 py-2 text-right font-medium">Model date</th>
                         </tr>
                       </thead>
                       <tbody>

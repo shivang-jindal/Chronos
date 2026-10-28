@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+﻿import { useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
@@ -205,8 +205,13 @@ export function WorkbenchPage() {
             </div>
             <h1 className="mt-1 text-2xl font-bold text-ink">Saved change briefs you can hand on</h1>
             <p className="mt-1 max-w-2xl text-sm text-ink-muted">
-              Every project is a named area and time window. Run it to produce a stored brief with method and
+              Every project is a named area and time window. Run it to produce a stored brief with its method and
               provenance, then export CSV, JSON, or a printable page that a colleague can read without the app.
+            </p>
+            <p className="mt-1 max-w-2xl text-xs text-ink-faint">
+              Brief figures are an illustrative deterministic model of the saved configuration, not satellite pixel
+              analysis. The natural-event feed cross-checks for open events in the same area; it is not a detection
+              source. Use <span className="text-ink-muted">Scenes</span> for real STAC metadata.
             </p>
           </div>
 
@@ -436,8 +441,9 @@ export function WorkbenchPage() {
                 </div>
                 <h2 className="mt-4 text-lg font-semibold text-ink">A brief starts with a place and a window</h2>
                 <p className="mt-2 max-w-md text-sm text-ink-muted">
-                  Create a project, run it, and Chronos stores the result with its method, confidence split, and the
-                  live natural events that overlap the area. The exports stay useful after the tab closes.
+                  Create a project, run it, and Chronos stores a modeled result with its method, confidence split,
+                  and the open natural events that overlap the area. The exports stay useful after the tab closes,
+                  as long as the modeling basis travels with them.
                 </p>
               </div>
             ) : (
@@ -551,7 +557,7 @@ export function WorkbenchPage() {
 
                     <div className="mt-4 grid gap-3 sm:grid-cols-3">
                       {[
-                        ['Changes detected', latestRun.output.totalChanges.toLocaleString()],
+                        ['Modeled changes', latestRun.output.totalChanges.toLocaleString()],
                         ['Total area', `${latestRun.output.totalAreaHa.toLocaleString()} ha`],
                         [
                           'High confidence',
@@ -568,63 +574,67 @@ export function WorkbenchPage() {
                     <div className="mt-5 grid gap-5 xl:grid-cols-2">
                       <div>
                         <h4 className="text-sm font-semibold text-ink">Area by change type</h4>
-                        <table className="mt-2 w-full text-sm">
-                          <thead>
-                            <tr className="border-b border-line text-left text-xs uppercase tracking-wide text-ink-faint">
-                              <th className="py-2 font-medium">Type</th>
-                              <th className="py-2 text-right font-medium">Count</th>
-                              <th className="py-2 text-right font-medium">Area</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {latestRun.output.byType.map((row) => (
-                              <tr key={row.type} className="border-b border-line/60">
-                                <td className="py-2 capitalize text-ink-muted">{row.type.replace(/_/g, ' ')}</td>
-                                <td className="py-2 text-right tabular-nums text-ink">{row.count}</td>
-                                <td className="py-2 text-right tabular-nums text-ink">
-                                  {row.areaHa.toLocaleString()} ha
-                                </td>
+                        <div className="overflow-x-auto">
+                          <table className="mt-2 w-full text-sm">
+                            <thead>
+                              <tr className="border-b border-line text-left text-xs uppercase tracking-wide text-ink-faint">
+                                <th className="py-2 font-medium">Type</th>
+                                <th className="py-2 text-right font-medium">Count</th>
+                                <th className="py-2 text-right font-medium">Area</th>
                               </tr>
-                            ))}
-                          </tbody>
-                        </table>
+                            </thead>
+                            <tbody>
+                              {latestRun.output.byType.map((row) => (
+                                <tr key={row.type} className="border-b border-line/60">
+                                  <td className="py-2 capitalize text-ink-muted">{row.type.replace(/_/g, ' ')}</td>
+                                  <td className="py-2 text-right tabular-nums text-ink">{row.count}</td>
+                                  <td className="py-2 text-right tabular-nums text-ink">
+                                    {row.areaHa.toLocaleString()} ha
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
                       </div>
 
                       <div>
                         <h4 className="text-sm font-semibold text-ink">Largest events</h4>
-                        <table className="mt-2 w-full text-sm">
-                          <thead>
-                            <tr className="border-b border-line text-left text-xs uppercase tracking-wide text-ink-faint">
-                              <th className="py-2 font-medium">Type</th>
-                              <th className="py-2 text-right font-medium">Area</th>
-                              <th className="py-2 text-right font-medium">Confidence</th>
-                              <th className="py-2 text-right font-medium">Centroid</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {latestRun.output.events.map((event) => (
-                              <tr key={event.id} className="border-b border-line/60">
-                                <td className="py-2 capitalize text-ink-muted">{event.type.replace(/_/g, ' ')}</td>
-                                <td className="py-2 text-right tabular-nums text-ink">
-                                  {event.areaHa.toLocaleString()} ha
-                                </td>
-                                <td className="py-2 text-right tabular-nums text-ink">
-                                  {(event.confidence * 100).toFixed(0)}%
-                                </td>
-                                <td className="py-2 text-right tabular-nums text-ink-muted">
-                                  {event.centroid.lat.toFixed(2)}, {event.centroid.lon.toFixed(2)}
-                                </td>
+                        <div className="overflow-x-auto">
+                          <table className="mt-2 w-full text-sm">
+                            <thead>
+                              <tr className="border-b border-line text-left text-xs uppercase tracking-wide text-ink-faint">
+                                <th className="py-2 font-medium">Type</th>
+                                <th className="py-2 text-right font-medium">Area</th>
+                                <th className="py-2 text-right font-medium">Confidence</th>
+                                <th className="py-2 text-right font-medium">Centroid</th>
                               </tr>
-                            ))}
-                          </tbody>
-                        </table>
+                            </thead>
+                            <tbody>
+                              {latestRun.output.events.map((event) => (
+                                <tr key={event.id} className="border-b border-line/60">
+                                  <td className="py-2 capitalize text-ink-muted">{event.type.replace(/_/g, ' ')}</td>
+                                  <td className="py-2 text-right tabular-nums text-ink">
+                                    {event.areaHa.toLocaleString()} ha
+                                  </td>
+                                  <td className="py-2 text-right tabular-nums text-ink">
+                                    {(event.confidence * 100).toFixed(0)}%
+                                  </td>
+                                  <td className="py-2 text-right tabular-nums text-ink-muted">
+                                    {event.centroid.lat.toFixed(2)}, {event.centroid.lon.toFixed(2)}
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
                       </div>
                     </div>
 
                     <p className="mt-4 border-t border-line pt-3 text-xs text-ink-faint">
-                      Source: {latestRun.output.source.label} ({latestRun.output.source.mode}).{' '}
-                      {latestRun.output.source.note ?? 'Live feed.'} Generated {formatDate(latestRun.createdAt)} in{' '}
-                      {latestRun.durationMs} ms.
+                      Natural-event cross-check: {latestRun.output.source.label} ({latestRun.output.source.mode}).{' '}
+                      {latestRun.output.source.note ?? 'Live feed.'} Brief generated {formatDate(latestRun.createdAt)} in{' '}
+                      {latestRun.durationMs} ms. Figures come from the illustrative model, not imagery.
                     </p>
                   </article>
                 ) : (

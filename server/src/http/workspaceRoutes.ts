@@ -67,8 +67,9 @@ function csvFor(run: ChangeBriefRun, projectName: string): string {
   const rows: string[] = [
     `project,${JSON.stringify(projectName)}`,
     `generated_at,${run.output.generatedAt}`,
-    `source,${JSON.stringify(run.output.source.label)}`,
-    `source_mode,${run.output.source.mode}`,
+    'output_basis,illustrative deterministic model (not pixel-derived, not validated)',
+    `cross_check_feed,${JSON.stringify(run.output.source.label)}`,
+    `cross_check_mode,${run.output.source.mode}`,
     `headline,${JSON.stringify(run.output.headline)}`,
     '',
     'event_id,change_type,area_ha,confidence,centroid_lat,centroid_lon'
@@ -168,10 +169,11 @@ function briefHtml(projectName: string, run: ChangeBriefRun): string {
   </table>
 
   <h2>Method and provenance</h2>
-  <p>Detection ran with the <strong>${escapeHtml(run.output.source.label)}</strong> reference layer over the
-  saved project window, at a minimum mapping area of the project threshold. Figures are deterministic for
-  the saved configuration: re-running the project reproduces the same counts and areas.</p>
-  <p>Source: ${sourceLine}${run.output.source.note ? `. ${escapeHtml(run.output.source.note)}` : ''}.</p>
+  <p><strong>These figures are modeled, not measured.</strong> Chronos generated them with a deterministic
+  illustrative model seeded by the saved project configuration. Re-running the project reproduces the same
+  counts and areas, but no satellite pixels were read and no change was validated against imagery.</p>
+  <p>The natural-event feed is used only as a cross-check for open events overlapping the area of interest:
+  ${sourceLine}${run.output.source.note ? `. ${escapeHtml(run.output.source.note)}` : ''}.</p>
 
   <footer>
     Generated ${escapeHtml(run.output.generatedAt)} by Chronos ${escapeHtml(APP_KIND)} workspace ·
@@ -335,6 +337,7 @@ export function createWorkspaceRouter({ store, registry }: WorkspaceDependencies
         JSON.stringify(
           {
             format: 'chronos-brief/1',
+            outputBasis: 'illustrative-deterministic-model',
             project: projectName,
             run: run.id,
             generatedAt: run.output.generatedAt,

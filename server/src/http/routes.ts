@@ -54,7 +54,7 @@ apiRouter.get('/v1/layers', (_req, res) => {
   });
 });
 
-const sceneSearchInput = z.object({ collection: z.enum(['landsat-c2-l2', 'sentinel-2-l2a']), bbox: z.array(z.number()).length(4), datetime: z.string().regex(/^\d{4}-\d{2}-\d{2}T00:00:00Z\/\d{4}-\d{2}-\d{2}T23:59:59Z$/), limit: z.number().int().min(1).max(20).default(10) }).refine((value) => value.bbox[0]! < value.bbox[2]! && value.bbox[1]! < value.bbox[3]! && value.bbox[0]! >= -180 && value.bbox[2]! <= 180 && value.bbox[1]! >= -90 && value.bbox[3]! <= 90, 'Bounding box must be ordered and within longitude/latitude limits.');
+const sceneSearchInput = z.object({ collection: z.enum(['landsat-c2-l2', 'sentinel-2-l2a']), bbox: z.array(z.number()).length(4), datetime: z.string().regex(/^\d{4}-\d{2}-\d{2}T00:00:00Z\/\d{4}-\d{2}-\d{2}T23:59:59Z$/), limit: z.number().int().min(1).max(20).default(10) }).refine((value) => value.bbox[0]! < value.bbox[2]! && value.bbox[1]! < value.bbox[3]! && value.bbox[0]! >= -180 && value.bbox[2]! <= 180 && value.bbox[1]! >= -90 && value.bbox[3]! <= 90, 'Bounding box must be ordered and within longitude/latitude limits.').refine((value) => value.datetime.slice(0, 10) <= value.datetime.slice(21, 31), 'End date must be on or after start date.');
 apiRouter.post('/v1/scenes/search', validateBody(sceneSearchInput), asyncHandler(async (req, res) => {
   res.status(201).json(await searchScenes(req.body));
 }));

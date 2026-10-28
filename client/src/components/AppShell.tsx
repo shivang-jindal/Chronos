@@ -14,6 +14,19 @@ import { AIChatModal } from './AIChatModal';
 import { SettingsModal } from './SettingsModal';
 import { HelpModal } from './HelpModal';
 
+type SpeechRecognitionLike = {
+  lang: string;
+  interimResults: boolean;
+  maxAlternatives: number;
+  onstart: (() => void) | null;
+  onend: (() => void) | null;
+  onerror: (() => void) | null;
+  onresult: ((event: { results: ArrayLike<ArrayLike<{ transcript: string }>> }) => void) | null;
+  start: () => void;
+  stop: () => void;
+};
+type SpeechWindow = Window & { SpeechRecognition?: new () => SpeechRecognitionLike; webkitSpeechRecognition?: new () => SpeechRecognitionLike };
+
 const NAV_ITEMS = [
   { to: '/workbench', label: 'Workbench', icon: Briefcase },
   { to: '/globe', label: 'Globe', icon: GlobeIcon },
@@ -21,7 +34,6 @@ const NAV_ITEMS = [
   { to: '/forecasting', label: 'Forecasting', icon: ZapIcon },
   { to: '/scenario-builder', label: 'Scenario Builder', icon: BrainIcon },
   { to: '/ai-chat', label: 'AI Oracle', icon: BrainIcon },
-  { to: '/data-explorer', label: 'Data Explorer', icon: LayersIcon2 },
   { to: '/scenes', label: 'Scene Search', icon: Satellite },
   { to: '/settings', label: 'Settings', icon: SettingsIcon }
 ];
@@ -32,6 +44,7 @@ export function AppShell() {
   const [activeModal, setActiveModal] = useState<string | null>(null);
   const [voiceActive, setVoiceActive] = useState(false);
   const [voiceListening, setVoiceListening] = useState(false);
+  const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
   const { addToast } = useToast();
@@ -40,22 +53,56 @@ export function AppShell() {
     setMobileNavOpen(false);
   }, [location.pathname]);
 
-  const handleVoiceToggle = () => {
-    if (!voiceActive) {
-      setVoiceActive(true);
-      addToast({ type: 'info', title: 'Voice Control Activated', message: 'Say "Hey Chronos" to start', duration: 3000 });
+  const handleVoiceCommand = (spoken: string) => {
+    const command = spoken.toLowerCase().replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
+    const destinations: Array<[RegExp, string]> = [
+      [/\b(workbench|briefs?)\b/, '/workbench'], [/\b(globe|earth)\b/, '/globe'],
+      [/\b(change|detection)\b/, '/change-detection'], [/\b(forecast|forecasting)\b/, '/forecasting'],
+      [/\b(scenes?|satellite|imagery)\b/, '/scenes'], [/\b(data explorer|datasets?)\b/, '/data-explorer'],
+      [/\b(scenarios?)\b/, '/scenario-builder'], [/\b(settings?)\b/, '/settings']
+    ];
+    const destination = destinations.find(([pattern]) => pattern.test(command));
+    if (destination) {
+      navigate(destination[1]);
+      addToast({ type: 'success', title: `Opening ${destination[1].slice(1).replaceAll('-', ' ')}`, message: `Recognized: “${spoken}”` });
+    } else if (/\b(layers?|layer panel)\b/.test(command)) {
+      openModal('layers');
+      addToast({ type: 'success', title: 'Layer controls opened', message: `Recognized: “${spoken}”` });
+    } else if (/\b(chat|assistant|ask)\b/.test(command)) {
+      openModal('ai-chat');
+      addToast({ type: 'info', title: 'Assistant opened', message: 'Type your question in the chat panel.' });
     } else {
-      setVoiceActive(false);
-      setVoiceListening(false);
-      addToast({ type: 'info', title: 'Voice Control Deactivated' });
+      addToast({ type: 'info', title: 'Command not recognized', message: `Try “open scenes”, “show globe”, or “open layers”. Heard: “${spoken}”` });
     }
   };
 
-  const handleVoiceCommand = async (command: string) => {
-    setVoiceListening(true);
-    // Process voice command through AI
-    // This would connect to the AI chat backend
-    setTimeout(() => setVoiceListening(false), 1000);
+  const handleVoiceToggle = () => {
+    if (voiceActive) {
+      recognitionRef.current?.stop();
+      recognitionRef.current = null;
+      setVoiceActive(false);
+      setVoiceListening(false);
+      return;
+    }
+    const speechWindow = window as SpeechWindow;
+    const Recognition = speechWindow.SpeechRecognition ?? speechWindow.webkitSpeechRecognition;
+    if (!Recognition) {
+      addToast({ type: 'error', title: 'Voice input unavailable', message: 'This browser does not support speech recognition. Use the navigation menu or keyboard shortcuts.' });
+      return;
+    }
+    const recognition = new Recognition();
+    recognition.lang = navigator.language || 'en-US';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+    recognition.onstart = () => { setVoiceActive(true); setVoiceListening(true); };
+    recognition.onend = () => { setVoiceActive(false); setVoiceListening(false); recognitionRef.current = null; };
+    recognition.onerror = () => { addToast({ type: 'error', title: 'Voice input stopped', message: 'Check microphone permission and try again.' }); };
+    recognition.onresult = (event) => {
+      const transcript = event.results[0]?.[0]?.transcript?.trim();
+      if (transcript) handleVoiceCommand(transcript);
+    };
+    recognitionRef.current = recognition;
+    try { recognition.start(); } catch { recognitionRef.current = null; setVoiceActive(false); setVoiceListening(false); addToast({ type: 'error', title: 'Could not start voice input', message: 'Try again after allowing microphone access.' }); }
   };
 
   const openModal = (modal: string) => setActiveModal(modal);
@@ -177,7 +224,8 @@ export function AppShell() {
                   ? 'bg-brand-500/15 text-brand-200 ring-2 ring-brand-500'
                   : 'text-ink-faint hover:bg-white/5'
               }`}
-              aria-label={voiceActive ? 'Deactivate voice control' : 'Activate voice control'}
+              aria-label={voiceActive ? 'Stop voice command capture' : 'Tap to speak a navigation command'}
+              title={voiceActive ? 'Stop voice capture' : 'Tap to speak · “open scenes”, “show globe”, “open layers”'}
               aria-pressed={voiceActive}
             >
               {voiceListening ? (
